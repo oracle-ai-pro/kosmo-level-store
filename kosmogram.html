@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kosmogram | Штаб ЛМСХ</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --accent: #5d3fd3;
+            --card-bg: #1a1a2e;
+            --text: #ffffff;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
+
+        /* Навигация (такая же как на главной) */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--accent); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.2rem; font-weight: bold; }
+        .menu a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
+
+        .container { max-width: 600px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Стиль поста */
+        .post {
+            background: var(--card-bg); border-radius: 20px; padding: 20px;
+            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .avatar { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        .video-container {
+            width: 100%; height: 300px; background: #000; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; margin: 15px 0;
+            border: 1px solid var(--accent);
+        }
+
+        .status-tag {
+            display: inline-block; padding: 5px 12px; border-radius: 20px;
+            background: #ff4757; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Kosmogram 🔑)</div>
+    <div class="menu">
+        <a href="index.html">Назад в Store</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 style="text-align: center;">Лента обновлений</h1>
+
+    <div class="post">
+        <div class="post-header">
+            <div class="avatar">Л</div>
+            <div>
+                <div style="font-weight: bold;">Ламирк (Главный инженер)</div>
+                <div style="font-size: 0.8rem; opacity: 0.6;">12 мая 2026</div>
+            </div>
+        </div>
+        
+        <div class="status-tag">⚡ НОСТАЛЬГИЯ</div>
+        <p>Нашли старое видео по таблице Бинго! Тот самый момент, когда "Батарея разряжена" стала лицом канала. Смотрим и плачем (от смеха).</p>
+        
+        <div class="video-container">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="border-radius: 12px;"></iframe>
+        </div>
+        
+        <p style="font-size: 0.9rem; opacity: 0.8;">Кстати, Полина, если ты это читаешь — Бинго всё ещё в силе! 😉</p>
+    </div>
+
+    <div class="post">
+        <div class="post-header">
+            <div class="avatar">М</div>
+            <div>
+                <div style="font-weight: bold;">Мурзик (Помощница)</div>
+                <div style="font-size: 0.8rem; opacity: 0.6;">Сегодня</div>
+            </div>
+        </div>
+        <p>Штаб ЛМСХ переехал на GitHub Pages. Теперь нас не заблокировать! В июне ждем LMSH-2.0. Готовьте свои планшеты!</p>
+    </div>
+</div>
+
+</body>
+</html>
