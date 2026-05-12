@@ -2,167 +2,144 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Oracle AI 1.1 | Prestige HQ</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#010103">
     <style>
         :root {
-            --bg: #010103;
-            --card: rgba(10, 10, 15, 0.85);
-            --cyan: #02b6ed;
+            --bg: #000000;
+            --card: #1c1c1e;
+            --accent: #02b6ed;
             --purple: #e60ced;
             --text: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
+            --input: #2c2c2e;
+            --danger: #ff453a;
+            --shadow: rgba(2, 182, 237, 0.3);
             --grad: linear-gradient(90deg, #02b6ed 0%, #e60ced 100%);
         }
 
-        ::-webkit-scrollbar { width: 4px; background: transparent; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .light-theme { --bg: #f2f2f7; --card: #ffffff; --accent: #007aff; --text: #000000; --input: #e5e5ea; }
 
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; }
-        body { display: flex; flex-direction: column; background: radial-gradient(circle at top right, rgba(230, 12, 237, 0.05), transparent), radial-gradient(circle at bottom left, rgba(2, 182, 237, 0.05), transparent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        
+        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* НАВИГАЦИЯ */
+        /* НАВИГАЦИЯ (КАК НА ГЛАВНОЙ) */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--purple); position: sticky; top: 0; z-index: 1000;
+            padding: 15px 5%; background: #000000; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo-nav { font-size: 1.1rem; font-weight: bold; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .menu-nav a { color: white; text-decoration: none; margin-left: 15px; font-size: 0.8rem; opacity: 0.8; }
+        .logo-nav { font-size: 1.1rem; font-weight: bold; color: #ffffff; text-decoration: none; }
+        .menu-nav { display: flex; gap: 20px; }
+        .menu-nav a { color: #ffffff; text-decoration: none; font-size: 0.9rem; opacity: 0.8; }
+        .menu-nav a:hover { opacity: 1; }
 
-        .main-wrapper { flex-grow: 1; display: flex; justify-content: center; align-items: center; width: 100%; }
+        .main-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; position: relative; }
 
-        .oracle-container { width: 95%; max-width: 450px; height: 85vh; background: var(--card); backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 40px; display: flex; flex-direction: column; position: relative; overflow: hidden; animation: boot 0.6s ease-out; }
+        /* КОНТЕЙНЕР ОРАКУЛА */
+        .oracle-container { 
+            width: 95%; max-width: 450px; height: 80vh; background: rgba(10, 10, 15, 0.85); 
+            backdrop-filter: blur(25px); border-radius: 40px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; overflow: hidden; position: relative;
+            box-shadow: 0 15px 50px -10px var(--shadow);
+        }
 
-        .top-nav-btn { position: absolute; top: 20px; right: 20px; z-index: 10; }
-        .toggle-mode-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--cyan); padding: 8px 12px; border-radius: 12px; font-size: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+        .top-btn-area { position: absolute; top: 20px; right: 20px; z-index: 100; }
+        .mode-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent); padding: 8px 12px; border-radius: 12px; font-size: 10px; font-weight: 900; cursor: pointer; }
 
-        .header { padding: 25px 20px 15px; text-align: center; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-        .logo { font-weight: 900; font-size: 18px; letter-spacing: 3px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
-
-        #chat-mode, #direct-mode, #titan-mode { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
-        #direct-mode, #titan-mode { display: none; padding: 20px; overflow-y: auto; }
-
-        .section-title { font-size: 11px; font-weight: 900; color: var(--cyan); text-transform: uppercase; margin: 20px 0 10px; letter-spacing: 1px; border-left: 3px solid var(--purple); padding-left: 10px; }
-
-        .packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .item-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 18px; transition: 0.3s; }
-        .item-card:hover { border-color: var(--cyan); }
-        .item-name { font-size: 13px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
-
-        .download-btn { display: inline-block; padding: 8px 12px; background: #fff; color: #000; text-decoration: none; border-radius: 8px; font-weight: 900; font-size: 9px; text-transform: uppercase; text-align: center; width: calc(100% - 24px); cursor: pointer; border: none; }
-
+        /* ЭЛЕМЕНТЫ ЧАТА */
+        #chat-mode, #packs-mode { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
         #chat-flow { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; animation: slideIn 0.3s ease; line-height: 1.4; position: relative; }
-        .ai-msg { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border: 1px solid var(--border); }
+        .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; line-height: 1.4; position: relative; }
+        .ai-msg { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border: 1px solid rgba(255,255,255,0.1); }
         .user-msg { background: var(--grad); align-self: flex-end; }
-
-        .speak-btn { position: absolute; right: 10px; top: 12px; background: none; border: none; color: var(--cyan); cursor: pointer; font-size: 16px; opacity: 0.6; }
         .input-box { padding: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.2); }
-        input { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 15px; padding: 12px; color: white; outline: none; }
-        .send-btn { background: var(--grad); border: none; border-radius: 15px; width: 50px; color: white; cursor: pointer; font-size: 18px; }
+        .input-box input { flex: 1; background: var(--input); border: none; border-radius: 15px; padding: 12px; color: white; outline: none; }
+        .send-btn { background: var(--grad); border: none; border-radius: 15px; width: 45px; color: white; cursor: pointer; }
 
-        @keyframes boot { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* ВСТРОЕННЫЙ TITAN */
+        #titan-screen { position: absolute; inset: 0; background: var(--bg); z-index: 50; display: none; overflow-y: auto; padding: 20px; }
+        .titan-card { background: var(--card); border-radius: 30px; padding: 25px; text-align: center; box-shadow: 0 10px 30px var(--shadow); }
+        .btn-titan { width: 100%; padding: 15px; border-radius: 15px; border: none; background: var(--accent); color: #fff; font-weight: bold; margin-top: 10px; cursor: pointer; }
+
+        /* ПАКИ */
+        #packs-mode { display: none; padding: 20px; overflow-y: auto; }
+        .packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .pack-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 18px; text-align: center; }
+        .pack-name { font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+        .dl-btn { display: block; background: #fff; color: #000; text-decoration: none; padding: 6px; border-radius: 8px; font-size: 10px; font-weight: 900; }
     </style>
 </head>
-<body>
+<body class="dark-theme">
 
 <nav>
-    <div class="logo-nav">LMSH ULTRA 🔑)</div>
+    <a href="index.html" class="logo-nav">LMSH ULTRA 🔑)</a>
     <div class="menu-nav">
         <a href="index.html">В Магазин</a>
         <a href="kosmogram.html">Kosmogram</a>
     </div>
 </nav>
 
-<div class="main-wrapper">
+<div class="main-content">
     <div class="oracle-container">
-        <div class="top-nav-btn"><button class="toggle-mode-btn" onclick="rotateMode()" id="mode-label">Режим: Паки</button></div>
-        <div class="header"><div class="logo">Oracle AI 1.1</div></div>
-        
+        <div class="top-btn-area">
+            <button class="mode-btn" onclick="rotateMode()" id="mode-label">РЕЖИМ: ПАКИ</button>
+        </div>
+
+        <div class="header" style="text-align:center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div style="font-weight:900; font-size:16px; letter-spacing:2px; color:var(--accent);">ORACLE AI 1.1</div>
+        </div>
+
         <div id="chat-mode">
             <div id="chat-flow">
-                <div class="msg ai-msg">
-                    Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?
-                    <button class="speak-btn" onclick="speakText('Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?')">🔊</button>
-                </div>
+                <div class="msg ai-msg">Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?</div>
             </div>
             <div class="input-box">
-                <input type="text" id="user-in" placeholder="Спроси про 3.3 Beta..." onkeypress="if(event.key==='Enter') send()">
+                <input type="text" id="user-in" placeholder="Спроси про 3.3..." onkeypress="if(event.key==='Enter') send()">
                 <button class="send-btn" onclick="send()">➔</button>
             </div>
         </div>
 
-        <div id="direct-mode">
-            <div class="section-title">Игры</div>
-            <div class="item-card">
-                <div class="item-name">A Better Place 1.3.6</div>
-                <a href="https://drive.google.com/file/d/1U9Ok7ThAGnOsQ_IM3gTX-UmDNBJ2qBno/view?usp=sharing" class="download-btn" target="_blank">Скачать .xapk</a>
-            </div>
-
-            <div class="section-title">Паки Kosmo Level</div>
-            <div class="packs-grid" id="packs-list">
-                </div>
-
-            <div class="section-title">Архив Истории</div>
-            <div class="item-card">
-                <div class="item-name">Вторжение Люми (Глава 1)</div>
-                <p style="font-size: 11px; opacity: 0.7; margin-bottom: 10px;">21 Августа 2024. 3:23 ночи...</p>
-                <button class="download-btn" style="background:var(--purple); color:white;">Читать</button>
-            </div>
-
-            <div class="section-title">Помощь и Справка</div>
-            <div class="item-card">
-                <div class="item-name" style="color: var(--cyan);">Инструкции</div>
-                <p style="font-size: 11px; opacity: 0.8; text-align: left;">
-                    Используй Оракул для поиска билдов. Если Хахми не разрешает басс — используй TITAN для донесения Ламирку.
-                </p>
+        <div id="packs-mode">
+            <div style="font-size:11px; color:var(--accent); font-weight:900; margin-bottom:10px;">АРХИВ ПАКОВ</div>
+            <div class="packs-grid" id="packs-list"></div>
+            <div style="margin-top:20px; font-size:11px; color:var(--purple); font-weight:900;">ПОМОЩЬ И СПРАВКА</div>
+            <div class="pack-card" style="margin-top:10px; text-align:left;">
+                <p style="font-size:10px; opacity:0.7;">Используй Оракул для поиска версий. События 21 августа доступны по запросу "Люми".</p>
             </div>
         </div>
 
-        <div id="titan-mode">
-            <div class="section-title">Система TITAN</div>
-            <div class="item-card">
-                <div class="item-name">Шлюз заблокирован</div>
-                <p style="font-size: 12px; margin-bottom: 20px;">Для прямой связи со Штабом ЛМСХ перейдите в зашифрованный терминал.</p>
-                <a href="titan.html" class="download-btn" style="background: var(--cyan); color: #000; padding: 15px;">АКТИВИРОВАТЬ TITAN</a>
+        <div id="titan-screen">
+            <div class="titan-card">
+                <h2 id="titan-title">TITAN SYSTEM</h2>
+                <div id="timer" style="font-size:40px; margin:20px 0; color:var(--accent); font-weight:800;">01:00</div>
+                <button class="btn-titan" onclick="startSystem()">АКТИВИРОВАТЬ</button>
+                <button class="btn-titan" style="background:none; color:var(--accent);" onclick="alert('Архив временно недоступен')">🔍 АРХИВ</button>
             </div>
-            <div class="section-title">Статус</div>
-            <p style="font-size: 10px; opacity: 0.5; text-align: center;">Связь с Google Macros: АКТИВНА ✅</p>
-        </div>
+            </div>
     </div>
 </div>
 
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8YweWa9ZP1nQKbrgvZvPiwVa2DLlaRgM-03xRFUJ5SSTv1WiSXpE9S6mG3aMtZhRahw/exec";
     const versions = ["1.0", "2.0", "2.2", "2.5", "2.8", "2.9", "3.0", "3.1", "3.2", "3.3"];
-    
-    let currentMode = 0; // 0-Chat, 1-Packs, 2-Titan
+    let mode = 0; // 0-Chat, 1-Packs, 2-Titan
 
     function rotateMode() {
-        currentMode = (currentMode + 1) % 3;
-        const modes = ['chat-mode', 'direct-mode', 'titan-mode'];
-        const labels = ['Режим: Паки', 'Режим: Titan', 'Режим: Оракул'];
+        mode = (mode + 1) % 3;
+        document.getElementById('chat-mode').style.display = (mode === 0) ? 'flex' : 'none';
+        document.getElementById('packs-mode').style.display = (mode === 1) ? 'block' : 'none';
+        document.getElementById('titan-screen').style.display = (mode === 2) ? 'block' : 'none';
         
-        modes.forEach((m, i) => document.getElementById(m).style.display = (i === currentMode) ? 'flex' : 'none');
-        document.getElementById('mode-label').innerText = labels[currentMode];
-        if(currentMode === 1) renderPacks();
+        const labels = ["РЕЖИМ: ПАКИ", "РЕЖИМ: TITAN", "РЕЖИМ: ОРАКУЛ"];
+        document.getElementById('mode-label').innerText = labels[mode];
+        if(mode === 1) renderPacks();
     }
 
     function renderPacks() {
         const list = document.getElementById('packs-list');
         list.innerHTML = "";
         versions.forEach(v => {
-            const fileName = `Kosmo_Level_${v}.worldpack`;
-            list.innerHTML += `
-                <div class="item-card">
-                    <div class="item-name">Kosmo Level ${v}</div>
-                    <a href="packs/${fileName}" class="download-btn" download>Скачать</a>
-                </div>`;
+            list.innerHTML += `<div class="pack-card"><div class="pack-name">KL ${v}</div><a href="packs/Kosmo_Level_${v}.worldpack" class="dl-btn" download>Скачать</a></div>`;
         });
     }
 
@@ -170,42 +147,37 @@
         const inp = document.getElementById('user-in');
         const val = inp.value.trim(); if(!val) return;
         addMsg(val, 'user-msg');
-        const low = val.toLowerCase();
         inp.value = "";
         
         setTimeout(() => {
-            if(low.includes("басс") || low.includes("создай трек")) {
+            const low = val.toLowerCase();
+            if(low.includes("басс")) {
                 addMsg("Я попробую создать трек, правда не на моей модели... А, нет, мне не разрешили. АХАХАХАХА!", "ai-msg");
-            } else if(low.includes("ламирк")) {
-                addMsg("Ламирк — главный инженер проекта LMSH. Его системы обеспечивают стабильность Prestige HQ.", "ai-msg");
             } else if(versions.includes(val)) {
-                addMsg(`Билд ${val} найден в архивах. Скачивание доступно в режиме Паков.`, "ai-msg", val);
+                addMsg(`Билд ${val} найден. Ссылка доступна во вкладке ПАКИ.`, "ai-msg");
             } else {
-                addMsg("К сожалению, я не понимаю запрос. Попробуй спросить про паки или Ламирка.", "ai-msg");
+                addMsg("Запрос принят штабом ЛМСХ.", "ai-msg");
             }
         }, 500);
     }
 
-    function addMsg(text, type, ver = null) {
+    function addMsg(text, type) {
         const chat = document.getElementById('chat-flow');
         const d = document.createElement('div'); d.className = 'msg ' + type;
-        d.innerHTML = `<span>${text}</span>${type === 'ai-msg' ? `<button class="speak-btn" onclick="speakText('${text.replace(/'/g, "")}')">🔊</button>` : ''}`;
-        if(ver) {
-            d.innerHTML += `<br><a href="packs/Kosmo_Level_${ver}.worldpack" class="download-btn" style="margin-top:10px; width:auto;" download>Скачать ${ver}</a>`;
-        }
+        d.innerText = text;
         chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
     }
 
-    function speakText(text) {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'ru-RU'; msg.pitch = 1.3;
-        window.speechSynthesis.speak(msg);
+    // ТИТАН ЛОГИКА
+    function startSystem() {
+        let t = 60;
+        const timerDiv = document.getElementById('timer');
+        const interval = setInterval(() => {
+            t--;
+            timerDiv.innerText = `00:${t < 10 ? '0'+t : t}`;
+            if(t <= 0) { clearInterval(interval); alert("Шлюз открыт!"); timerDiv.innerText = "01:00"; }
+        }, 20);
     }
-
-    // Инициализация паков при загрузке
-    renderPacks();
 </script>
-
 </body>
 </html>
