@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kosmo Level Store v.4.0</title>
+    <style>
+        :root {
+            --bg-color: #0f0f1a; /* Тёмный, в стиле ЛМСХ */
+            --accent: #5d3fd3;
+            --text: #ffffff;
+        }
+        body { font-family: sans-serif; background: var(--bg-color); color: var(--text); margin: 0; }
+        
+        /* Та самая навигация */
+        nav {
+            display: flex;
+            justify-content: space-between; /* Название слева, вкладки справа */
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { font-weight: bold; font-size: 1.2rem; }
+
+        .menu { display: flex; gap: 20px; }
+        .menu a { color: white; text-decoration: none; opacity: 0.8; transition: 0.3s; }
+        .menu a:hover { opacity: 1; color: var(--accent); }
+
+        /* Для мобилок прячем меню (потом добавим бургер) */
+        @media (max-width: 768px) {
+            .menu { display: none; } /* Тут будет твой бургер из 1-го скрина */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Kosmo Level Store</div>
+        <div class="menu">
+            <a href="#">Главная</a>
+            <a href="#">Kosmogram</a>
+            <a href="#">Помощник</a>
+            <a href="#">О сайте</a>
+        </div>
+    </nav>
+</body>
+</html>
