@@ -19,12 +19,7 @@
 
         ::-webkit-scrollbar { width: 4px; background: transparent; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(255, 255, 255, 0.1); 
-            border-radius: 10px; 
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        ::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; }
         body { display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at top right, rgba(230, 12, 237, 0.05), transparent), radial-gradient(circle at bottom left, rgba(2, 182, 237, 0.05), transparent); }
@@ -37,30 +32,26 @@
         .header { padding: 25px 20px 15px; text-align: center; border-bottom: 1px solid var(--border); flex-shrink: 0; }
         .logo { font-weight: 900; font-size: 18px; letter-spacing: 3px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
 
-        #chat-mode, #direct-mode { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
-        #direct-mode { display: none; padding: 20px; overflow-y: auto; scrollbar-gutter: stable; }
+        #chat-mode, #direct-mode, #titan-mode { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        #direct-mode, #titan-mode { display: none; padding: 20px; overflow-y: auto; }
 
         .section-title { font-size: 11px; font-weight: 900; color: var(--cyan); text-transform: uppercase; margin: 20px 0 10px; letter-spacing: 1px; border-left: 3px solid var(--purple); padding-left: 10px; }
 
         .packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .item-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 18px; transition: 0.3s; }
-        .item-card:hover { border-color: var(--cyan); background: rgba(2, 182, 237, 0.05); }
+        .item-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 18px; transition: 0.3s; margin-bottom: 10px; }
+        
         .item-name { font-size: 13px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+        .download-btn { display: inline-block; padding: 8px 12px; background: #fff; color: #000; text-decoration: none; border-radius: 8px; font-weight: 900; font-size: 9px; text-transform: uppercase; text-align: center; width: 100%; cursor: pointer; border: none; }
 
-        .download-btn { display: inline-block; padding: 8px 12px; background: #fff; color: #000; text-decoration: none; border-radius: 8px; font-weight: 900; font-size: 9px; text-transform: uppercase; transition: 0.2s; text-align: center; width: calc(100% - 24px); cursor: pointer; border: none; }
-        .download-btn:active { transform: scale(0.9); }
-
-        #chat-flow { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; animation: slideIn 0.3s ease; line-height: 1.4; position: relative; }
-        .ai-msg { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border: 1px solid var(--border); padding-right: 40px; }
+        #chat-flow { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; animation: slideIn 0.3s ease; position: relative; }
+        .ai-msg { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border: 1px solid var(--border); }
         .user-msg { background: var(--grad); align-self: flex-end; }
 
-        .speak-btn { position: absolute; right: 10px; top: 12px; background: none; border: none; color: var(--cyan); cursor: pointer; font-size: 16px; opacity: 0.6; transition: 0.3s; }
-        .speak-btn:hover { opacity: 1; color: var(--purple); transform: scale(1.1); }
-
+        .speak-btn { position: absolute; right: 10px; top: 12px; background: none; border: none; color: var(--cyan); cursor: pointer; font-size: 16px; opacity: 0.6; }
         .input-box { padding: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.2); }
         input { flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 15px; padding: 12px; color: white; outline: none; }
-        .send-btn { background: var(--grad); border: none; border-radius: 15px; width: 50px; color: white; cursor: pointer; font-size: 18px; }
+        .send-btn { background: var(--grad); border: none; border-radius: 15px; width: 50px; color: white; cursor: pointer; }
 
         @keyframes boot { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -69,117 +60,106 @@
 <body>
 
 <div class="oracle-container">
-    <div class="top-nav"><button class="toggle-mode-btn" onclick="toggleMode()" id="mode-label">Режим: Паки</button></div>
+    <div class="top-nav"><button class="toggle-mode-btn" onclick="rotateMode()" id="mode-label">Режим: Паки</button></div>
     <div class="header"><div class="logo">Oracle AI 1.1</div></div>
     
     <div id="chat-mode">
         <div id="chat-flow">
             <div class="msg ai-msg">
-                Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?
-                <button class="speak-btn" onclick="speakText('Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?')">🔊</button>
+                Оракул активен. Снежинка и Хахми в системе.
+                <button class="speak-btn" onclick="speakText('Оракул активен. Снежинка и Хахми в системе.')">🔊</button>
             </div>
         </div>
         <div class="input-box">
-            <input type="text" id="user-in" placeholder="Спроси про 3.3 Beta..." onkeypress="if(event.key==='Enter') send()">
+            <input type="text" id="user-in" placeholder="Спроси Хахми про басс..." onkeypress="if(event.key==='Enter') send()">
             <button class="send-btn" onclick="send()">➔</button>
         </div>
     </div>
 
-    <div id="direct-mode">
+    <div id="direct-mode" style="display:none;">
         <div class="section-title">Игры</div>
-        <div class="item-card">
-            <div class="item-name">A Better Place 1.3.6</div>
-            <a href="https://drive.google.com/file/d/1U9Ok7ThAGnOsQ_IM3gTX-UmDNBJ2qBno/view?usp=sharing" class="download-btn" target="_blank">Скачать .xapk</a>
-        </div>
+        <div class="item-card"><div class="item-name">A Better Place 1.3.6</div><a href="ССЫЛКА" class="download-btn">Скачать</a></div>
 
         <div class="section-title">Паки Kosmo Level</div>
         <div class="packs-grid" id="packs-list"></div>
 
-        <div class="section-title">Помощь и Справка</div>
-        <div class="item-card" style="grid-column: span 2;">
-            <div class="item-name" style="color: var(--cyan);">Инструкции штаба</div>
-            <p style="font-size: 11px; opacity: 0.8; line-height: 1.4; text-align: left; margin-bottom: 10px;">
-                • <b>Оракул:</b> Понимает номера версий (1.0 - 3.3), знает про Ламирка, Мурзика и события 21 августа.<br>
-                • <b>Установка:</b> Скачайте .worldpack и откройте его через приложение Kosmo Level.<br>
-                • <b>TITAN:</b> Если ИИ не отвечает, используйте Titan для прямой связи.
-            </p>
+        <div class="section-title">Архив Истории</div>
+        <div class="item-card">
+            <div class="item-name">Вторжение Люми (Глава 1)</div>
+            <button class="download-btn" style="background:var(--purple); color:white;">Читать историю</button>
+        </div>
+
+        <div class="section-title">Справка</div>
+        <div class="item-card">
+            <div class="item-name" style="color:var(--cyan);">Помощь инженеру</div>
+            <p style="font-size:11px; opacity:0.7; text-align:left;">Инструкция: Используйте чат для поиска билдов и TITAN для донесений в штаб.</p>
+        </div>
+    </div>
+
+    <div id="titan-mode" style="display:none;">
+        <div class="section-title">Система TITAN</div>
+        <div class="item-card">
+            <div class="item-name">Связь со штабом</div>
+            <p style="font-size:12px; margin-bottom:15px;">Перейдите в зашифрованный терминал для отправки донесений.</p>
+            <a href="titan.html" class="download-btn" style="background:var(--cyan); color:black;">Открыть Терминал</a>
         </div>
     </div>
 </div>
 
 <script>
-    // ТВОЙ МАКРОС (НЕ ИЗМЕНЯТЬ!)
+    // МАКРОС ОСТАВЛЕН БЕЗ ИЗМЕНЕНИЙ!
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8YweWa9ZP1nQKbrgvZvPiwVa2DLlaRgM-03xRFUJ5SSTv1WiSXpE9S6mG3aMtZhRahw/exec";
     
-    const versions = ["1.0", "2.0", "2.2", "2.5", "2.8", "2.9", "3.0", "3.1", "3.2", "3.3"];
-    let isChat = true;
+    let currentMode = 0; // 0-Chat, 1-Packs, 2-Titan
 
-    function toggleMode() {
-        isChat = !isChat;
-        document.getElementById('chat-mode').style.display = isChat ? 'flex' : 'none';
-        document.getElementById('direct-mode').style.display = isChat ? 'none' : 'block';
-        document.getElementById('mode-label').innerText = isChat ? 'Режим: Паки' : 'Режим: Оракул';
-        if(!isChat) renderPacks();
+    function rotateMode() {
+        currentMode = (currentMode + 1) % 3;
+        const modes = ['chat-mode', 'direct-mode', 'titan-mode'];
+        const labels = ['Режим: Паки', 'Режим: Titan', 'Режим: Оракул'];
+        
+        modes.forEach((m, i) => document.getElementById(m).style.display = (i === currentMode) ? 'flex' : 'none');
+        document.getElementById('mode-label').innerText = labels[currentMode];
+        if(currentMode === 1) renderPacks();
     }
 
     function renderPacks() {
         const list = document.getElementById('packs-list');
+        const versions = ["1.0", "2.0", "3.0", "3.3"]; // Сократил для примера
         list.innerHTML = "";
         versions.forEach(v => {
-            const fileName = `Kosmo_Level_${v}.worldpack`;
-            list.innerHTML += `
-                <div class="item-card">
-                    <div class="item-name">Kosmo Level ${v}</div>
-                    <a href="packs/${fileName}" class="download-btn" download="${fileName}">Скачать</a>
-                </div>`;
+            list.innerHTML += `<div class="item-card"><div class="item-name">KL ${v}</div><a href="#" class="download-btn">Скачать</a></div>`;
         });
     }
 
     function send() {
         const inp = document.getElementById('user-in');
-        const val = inp.value.trim(); if(!val) return;
-        addMsg(val, 'user-msg'); inp.value = "";
+        const val = inp.value.trim().toLowerCase(); if(!val) return;
+        addMsg(inp.value, 'user-msg'); inp.value = "";
         
         setTimeout(() => {
-            const low = val.toLowerCase();
-            if(low === "3.3 beta") {
-                addMsg(`Билд 3.3 Beta найден. Последняя версия с квадратными щитами в 11 мире.`, 'ai-msg', "3.3_Beta");
-            } else if(versions.includes(val)) {
-                addMsg(`Билд ${val} найден в архивах Prestige HQ.`, 'ai-msg', val);
-            } else if(low.includes("люм") || low.includes("21 август")) {
-                addMsg(`Архив от 21.08.2024: Вторжение Люми. Она обожгла руку и думала, что это сон...`, 'ai-msg');
-            } else if(low.includes("ламирк")) {
-                addMsg("Ламирк — главный инженер проекта LMSH. Его системы обеспечивают стабильность Prestige HQ.", "ai-msg");
-            } else if(low.includes("мурзик")) {
-                addMsg("Мурзик — официальная помощница инженера. Она отвечает за координацию систем.", "ai-msg");
+            if(val.includes("басс") || val.includes("создай трек")) {
+                addMsg("Я попробую создать трек, правда не на моей модели... А, нет, мне не разрешили. АХАХАХАХА!", "ai-msg");
+            } else if(val.includes("ламирк")) {
+                addMsg("Главный инженер на связи. Системы стабильны.", "ai-msg");
             } else {
-                addMsg('К сожалению, я не понимаю запрос. Я ещё учусь.', 'ai-msg');
+                addMsg("Запрос принят. Оракул анализирует...", "ai-msg");
             }
-        }, 400);
+        }, 500);
     }
 
-    function addMsg(text, type, ver = null) {
+    function addMsg(text, type) {
         const chat = document.getElementById('chat-flow');
         const d = document.createElement('div'); d.className = 'msg ' + type;
-        const cleanText = text.replace(/'/g, "").replace(/"/g, "");
-        
-        d.innerHTML = `<span>${text}</span>${type === 'ai-msg' ? `<button class="speak-btn" onclick="speakText('${cleanText}')">🔊</button>` : ''}`;
-        
-        if(ver) {
-            const fileName = ver === "3.3_Beta" ? `Kosmo_Level_3.3_Beta.worldpack` : `Kosmo_Level_${ver}.worldpack`;
-            d.innerHTML += `<br><a href="packs/${fileName}" class="download-btn" style="margin-top:10px; width:auto;" download="${fileName}">Скачать ${ver.replace('_', ' ')}</a>`;
-        }
+        d.innerHTML = `<span>${text}</span>${type === 'ai-msg' ? `<button class="speak-btn" onclick="speakText('${text}')">🔊</button>` : ''}`;
         chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
     }
 
     function speakText(text) {
         window.speechSynthesis.cancel();
         const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'ru-RU';
-        msg.pitch = 1.3;
+        msg.lang = 'ru-RU'; msg.pitch = 1.3;
         window.speechSynthesis.speak(msg);
     }
 </script>
-
 </body>
 </html>
