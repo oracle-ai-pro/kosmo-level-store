@@ -3,84 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosmo Level Store | Tablet Edition</title>
+    <title>Kosmo Level Store 🔑)</title>
     <style>
         :root {
             --bg: #0f0f1a;
             --accent: #5d3fd3;
             --card-bg: #1a1a2e;
+            --text: #ffffff;
         }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
 
-        /* Навигация для Планшета/ПК */
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- НАВИГАЦИЯ --- */
         nav {
             display: flex;
-            justify-content: space-between; /* Название слева, вкладки справа */
+            justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(0,0,0,0.5);
+            padding: 15px 5%;
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .menu { display: flex; gap: 25px; }
-        .menu a { color: white; text-decoration: none; font-weight: 500; transition: 0.3s; }
-        .menu a:hover { color: var(--accent); }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-        /* Сетка паков */
+        .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 1rem;
+        }
+
+        .menu a:hover {
+            color: var(--accent);
+        }
+
+        /* --- БУРГЕР (ДЛЯ ТЕЛЕФОНА) --- */
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .burger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* --- СЕТКА КАРТОЧЕК --- */
+        .main-container {
+            padding: 30px 5%;
+            text-align: center;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 40px 5%;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
         .pack-card {
             background: var(--card-bg);
             border-radius: 15px;
-            padding: 15px;
-            text-align: center;
+            padding: 20px;
             cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .pack-card:hover { border-color: var(--accent); transform: translateY(-5px); }
-        .pack-card img { width: 100%; border-radius: 10px; }
 
-        /* Модальное окно */
+        .pack-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .pack-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background: #252545; /* Заглушка если фото не грузится */
+        }
+
+        /* --- МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ) --- */
         .overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            z-index: 9999; justify-content: center; align-items: center;
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
         }
+
         .modal {
-            background: var(--card-bg); padding: 30px; border-radius: 20px;
-            max-width: 600px; width: 90%; position: relative;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 85%;
+            position: relative;
+            border: 1px solid var(--accent);
+            text-align: left;
+            animation: fadeIn 0.3s ease;
         }
-        .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 30px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 768px) {
+            .burger { display: flex; }
+
+            .menu {
+                display: none; 
+                flex-direction: column;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--bg);
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                z-index: 10000;
+            }
+
+            .menu.active { display: flex; }
+            
+            .menu a { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo" style="font-size: 1.5rem; font-weight: bold;">Kosmo Level Store 🔑)</div>
-    <div class="menu">
-        <a href="index.html">Главная</a>
+    <div class="logo">Kosmo Level Store 🔑)</div>
+    <div class="burger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="menu" id="navMenu">
+        <a href="index.html" onclick="toggleMenu()">Главная</a>
         <a href="kosmogram.html">Kosmogram</a>
         <a href="helper.html">Помощник</a>
         <a href="about.html">О сайте</a>
     </div>
 </nav>
 
-<div class="grid">
-    <div class="pack-card" onclick="openPack('abp')">
-        <img src="https://via.placeholder.com/300x150" alt="ABP">
-        <h3>A Better Place 1.3.6</h3>
-    </div>
-    
-    <div class="pack-card" onclick="openPack('kl33')">
-        <img src="https://via.placeholder.com/300x150" alt="KL 3.3">
-        <h3>Kosmo Level 3.3</h3>
+<div class="main-container">
+    <h1>Добро пожаловать в Штаб ЛМСХ</h1>
+    <p>Выбирай нужный пак уровней для загрузки</p>
+
+    <div class="grid">
+        <div class="pack-card" onclick="openPack('abp')">
+            <img src="https://via.placeholder.com/300x160/252545/ffffff?text=A+Better+Place" alt="ABP">
+            <h3>A Better Place 1.3.6</h3>
+        </div>
+
+        <div class="pack-card" onclick="openPack('kl33')">
+            <img src="https://via.placeholder.com/300x160/252545/ffffff?text=Kosmo+Level+3.3" alt="KL 3.3">
+            <h3>Kosmo Level 3.3</h3>
+        </div>
     </div>
 </div>
 
@@ -92,29 +230,47 @@
 </div>
 
 <script>
-    function openPack(type) {
+    // Функция меню-бургера
+    function toggleMenu() {
+        if (window.innerWidth <= 768) {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    }
+
+    // Логика всплывающих окон
+    function openPack(packId) {
         const content = document.getElementById('modalContent');
         const overlay = document.getElementById('modalOverlay');
-        
-        if(type === 'abp') {
+
+        if (packId === 'abp') {
             content.innerHTML = `
                 <h2>A Better Place 1.3.6</h2>
-                <p>Тот самый легендарный пак. Обновлен сегодня.</p>
-                <button style="padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer;">Скачать</button>
+                <hr style="border: 0.5px solid var(--accent); margin: 15px 0;">
+                <p>Самый масштабный проект штаба. Включает в себя обновленные текстуры и исправленные баги сенсоров.</p>
+                <p><b>Дата обновления:</b> 12 мая 2026</p>
+                <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
             `;
-        } else if(type === 'kl33') {
+        } else if (packId === 'kl33') {
             content.innerHTML = `
                 <h2>Kosmo Level 3.3</h2>
-                <p>Классическая версия уровней для твоего симулятора.</p>
-                <button style="padding: 10px 20px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer;">Скачать</button>
+                <hr style="border: 0.5px solid var(--accent); margin: 15px 0;">
+                <p>Классическая сборка уровней. Идеально подходит для стабильной игры на мобильных устройствах.</p>
+                <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
             `;
         }
+
         overlay.style.display = 'flex';
     }
 
     function closePack() {
         document.getElementById('modalOverlay').style.display = 'none';
     }
+
+    // Закрытие по клавише Esc
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePack();
+    });
 </script>
 
 </body>
