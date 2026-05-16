@@ -2,96 +2,216 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Oracle AI 1.1 | Prestige HQ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kosmo Level Store | Помощник 🔑)</title>
     <style>
         :root {
-            --bg: #000000;
-            --card: #1c1c1e;
-            --accent: #02b6ed;
+            --bg: #010103;
+            --card: rgba(10, 10, 15, 0.6);
+            --cyan: #02b6ed;
             --purple: #e60ced;
             --text: #ffffff;
-            --input: #2c2c2e;
-            --danger: #ff453a;
-            --shadow: rgba(2, 182, 237, 0.3);
+            --border: rgba(255, 255, 255, 0.1);
             --grad: linear-gradient(90deg, #02b6ed 0%, #e60ced 100%);
+            /* Titan Vars */
+            --accent: #00f2ff;
+            --input: #1c1c1e;
+            --shadow: rgba(0, 242, 255, 0.3);
         }
 
-        .light-theme { --bg: #f2f2f7; --card: #ffffff; --accent: #007aff; --text: #000000; --input: #e5e5ea; }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         
-        body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            background: radial-gradient(circle at top left, rgba(2, 182, 237, 0.03), transparent), radial-gradient(circle at bottom right, rgba(230, 12, 237, 0.03), transparent);
+        }
 
-        /* НАВИГАЦИЯ (КАК НА ГЛАВНОЙ) */
+        /* --- НАВИГАЦИЯ (ТОЧНАЯ КОПИЯ С ГЛАВНОЙ) --- */
         nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: #000000; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: #010103;
+            height: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .logo-nav { font-size: 1.1rem; font-weight: bold; color: #ffffff; text-decoration: none; }
-        .menu-nav { display: flex; gap: 20px; }
-        .menu-nav a { color: #ffffff; text-decoration: none; font-size: 0.9rem; opacity: 0.8; }
-        .menu-nav a:hover { opacity: 1; }
 
-        .main-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .logo-nav {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--cyan);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
 
-        /* КОНТЕЙНЕР ОРАКУЛА */
+        .menu-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: 0.3s;
+            font-weight: 400;
+        }
+
+        .menu-nav a:hover, .menu-nav a.active {
+            opacity: 1;
+            color: var(--cyan);
+        }
+
+        /* --- БУРГЕР МЕНЮ --- */
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .burger span {
+            width: 22px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* --- КОНТЕЙНЕР ОРАКУЛА --- */
+        .main-wrapper { 
+            flex-grow: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+
         .oracle-container { 
-            width: 95%; max-width: 450px; height: 80vh; background: rgba(10, 10, 15, 0.85); 
-            backdrop-filter: blur(25px); border-radius: 40px; border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; overflow: hidden; position: relative;
-            box-shadow: 0 15px 50px -10px var(--shadow);
+            width: 100%; 
+            max-width: 450px; 
+            height: 75vh; 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 35px; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            overflow: hidden; 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .top-btn-area { position: absolute; top: 20px; right: 20px; z-index: 100; }
-        .mode-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--accent); padding: 8px 12px; border-radius: 12px; font-size: 10px; font-weight: 900; cursor: pointer; }
+        .top-nav-btn { position: absolute; top: 20px; right: 25px; z-index: 100; }
+        
+        .toggle-mode-btn { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border); 
+            color: var(--cyan); 
+            padding: 8px 14px; 
+            border-radius: 14px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+        .toggle-mode-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--cyan); }
 
-        /* ЭЛЕМЕНТЫ ЧАТА */
-        #chat-mode, #packs-mode { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
-        #chat-flow { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; line-height: 1.4; position: relative; }
-        .ai-msg { background: rgba(255, 255, 255, 0.05); align-self: flex-start; border: 1px solid rgba(255,255,255,0.1); }
-        .user-msg { background: var(--grad); align-self: flex-end; }
-        .input-box { padding: 20px; display: flex; gap: 10px; background: rgba(0,0,0,0.2); }
-        .input-box input { flex: 1; background: var(--input); border: none; border-radius: 15px; padding: 12px; color: white; outline: none; }
-        .send-btn { background: var(--grad); border: none; border-radius: 15px; width: 45px; color: white; cursor: pointer; }
+        .header { padding: 25px 20px 15px; text-align: left; padding-left: 30px; border-bottom: 1px solid var(--border); }
+        .logo { font-weight: 900; font-size: 18px; letter-spacing: 2px; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
 
-        /* ВСТРОЕННЫЙ TITAN */
-        #titan-screen { position: absolute; inset: 0; background: var(--bg); z-index: 50; display: none; overflow-y: auto; padding: 20px; }
-        .titan-card { background: var(--card); border-radius: 30px; padding: 25px; text-align: center; box-shadow: 0 10px 30px var(--shadow); }
-        .btn-titan { width: 100%; padding: 15px; border-radius: 15px; border: none; background: var(--accent); color: #fff; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        /* РЕЖИМЫ И КОНТЕНТ */
+        .mode-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 25px; }
+        .hidden { display: none !important; }
 
-        /* ПАКИ */
-        #packs-mode { display: none; padding: 20px; overflow-y: auto; }
-        .packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .pack-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 18px; text-align: center; }
-        .pack-name { font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-        .dl-btn { display: block; background: #fff; color: #000; text-decoration: none; padding: 6px; border-radius: 8px; font-size: 10px; font-weight: 900; }
+        /* КОНТЕНТ: ПАКИ */
+        .section-title { font-size: 11px; font-weight: 900; color: var(--cyan); text-transform: uppercase; margin: 0 0 15px; border-left: 3px solid var(--purple); padding-left: 10px; letter-spacing: 1px; }
+        .packs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .item-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 15px; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .item-name { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+        .download-btn { display: block; padding: 10px; background: #fff; color: #000; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 11px; text-align: center; transition: 0.2s; }
+        .download-btn:active { transform: scale(0.96); }
+
+        /* КОНТЕНТ: ЧАТ ОРАКУЛА */
+        #chat-flow { flex-grow: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 15px; overflow-y: auto; padding-right: 5px; }
+        .msg { padding: 12px 16px; border-radius: 20px; font-size: 14px; max-width: 85%; line-height: 1.45; }
+        .ai-msg { background: rgba(255, 255, 255, 0.04); align-self: flex-start; border: 1px solid var(--border); border-top-left-radius: 5px; }
+        .user-msg { background: var(--grad); align-self: flex-end; border-top-right-radius: 5px; }
+        
+        .input-box { display: flex; gap: 10px; background: rgba(255,255,255,0.04); padding: 8px 8px 8px 16px; border-radius: 20px; border: 1px solid var(--border); align-items: center; }
+        .input-box input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 14px; }
+        .send-btn { background: var(--cyan); border: none; border-radius: 50%; width: 32px; height: 32px; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+        /* КОНТЕНТ: TITAN */
+        .titan-inner { text-align: center; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .btn-titan { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--accent); color: #000; font-weight: 700; cursor: pointer; margin-top: 12px; font-size: 14px; transition: 0.2s; }
+        .btn-titan:active { transform: scale(0.97); }
+        
+        .loader-lmsh { display: flex; justify-content: center; gap: 12px; margin: 30px 0; font-size: 36px; font-weight: 900; color: var(--accent); }
+        @keyframes jump { 0% { transform: translateY(0); } 100% { transform: translateY(-20px); text-shadow: 0 10px 20px var(--accent); } }
+        .loader-lmsh span { display: inline-block; animation: jump 0.6s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+        .loader-lmsh span:nth-child(2) { animation-delay: 0.1s; }
+        .loader-lmsh span:nth-child(3) { animation-delay: 0.2s; }
+        .loader-lmsh span:nth-child(4) { animation-delay: 0.3s; }
+
+        /* АДАПТИВНОСТЬ ДЛЯ МЕНЮ */
+        @media (max-width: 768px) {
+            .burger { display: flex; }
+            .menu-nav {
+                display: none; 
+                flex-direction: column;
+                position: fixed;
+                top: 0; left: 0;
+                width: 100%; height: 100vh;
+                background: var(--bg);
+                justify-content: center;
+                align-items: center;
+                gap: 35px;
+                z-index: 10000;
+            }
+            .menu-nav.active { display: flex; }
+            .menu-nav a { font-size: 1.4rem; }
+        }
     </style>
 </head>
-<body class="dark-theme">
+<body>
 
 <nav>
-    <a href="index.html" class="logo-nav">LMSH ULTRA 🔑)</a>
-    <div class="menu-nav">
-        <a href="index.html">В Магазин</a>
+    <a href="index.html" class="logo-nav">Kosmo Level Store 🔑)</a>
+    <div class="burger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="menu-nav" id="navMenu">
+        <a href="index.html">Главная</a>
         <a href="kosmogram.html">Kosmogram</a>
+        <a href="helper.html" class="active">Помощник</a>
+        <a href="about.html">О сайте</a>
     </div>
 </nav>
 
-<div class="main-content">
+<div class="main-wrapper">
     <div class="oracle-container">
-        <div class="top-btn-area">
-            <button class="mode-btn" onclick="rotateMode()" id="mode-label">РЕЖИМ: ПАКИ</button>
-        </div>
-
-        <div class="header" style="text-align:center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-            <div style="font-weight:900; font-size:16px; letter-spacing:2px; color:var(--accent);">ORACLE AI 1.1</div>
-        </div>
-
-        <div id="chat-mode">
+        <div class="top-nav-btn"><button class="toggle-mode-btn" onclick="rotateMode()" id="mode-label">Режим: Паки</button></div>
+        <div class="header"><div class="logo">Oracle AI 1.1</div></div>
+        
+        <div id="mode-chat" class="mode-content hidden">
             <div id="chat-flow">
-                <div class="msg ai-msg">Оракул активен. Снежинка и Хахми в системе. Какую версию ищем?</div>
+                <div class="msg ai-msg">Оракул активен. Снежинка и Хахми в системе. Какую версию ищем? 🔑)</div>
             </div>
             <div class="input-box">
                 <input type="text" id="user-in" placeholder="Спроси про 3.3..." onkeypress="if(event.key==='Enter') send()">
@@ -99,85 +219,94 @@
             </div>
         </div>
 
-        <div id="packs-mode">
-            <div style="font-size:11px; color:var(--accent); font-weight:900; margin-bottom:10px;">АРХИВ ПАКОВ</div>
+        <div id="mode-packs" class="mode-content">
+            <div class="section-title">Архивные паки</div>
             <div class="packs-grid" id="packs-list"></div>
-            <div style="margin-top:20px; font-size:11px; color:var(--purple); font-weight:900;">ПОМОЩЬ И СПРАВКА</div>
-            <div class="pack-card" style="margin-top:10px; text-align:left;">
-                <p style="font-size:10px; opacity:0.7;">Используй Оракул для поиска версий. События 21 августа доступны по запросу "Люми".</p>
+            <div class="section-title">История штаба</div>
+            <div class="item-card" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; opacity: 0.8;">Вторжение Люми</span>
+                <a href="#" class="download-btn" style="margin: 0; padding: 6px 15px;">Читать</a>
             </div>
         </div>
 
-        <div id="titan-screen">
-            <div class="titan-card">
-                <h2 id="titan-title">TITAN SYSTEM</h2>
-                <div id="timer" style="font-size:40px; margin:20px 0; color:var(--accent); font-weight:800;">01:00</div>
-                <button class="btn-titan" onclick="startSystem()">АКТИВИРОВАТЬ</button>
-                <button class="btn-titan" style="background:none; color:var(--accent);" onclick="alert('Архив временно недоступен')">🔍 АРХИВ</button>
+        <div id="mode-titan" class="mode-content hidden">
+            <div class="titan-inner">
+                <div class="section-title" style="border-left-color: var(--accent); color: var(--accent); margin-bottom: 5px;">LMSH TITAN</div>
+                <div id="titan-main-ui">
+                    <p style="font-size: 13px; opacity: 0.6; margin-bottom: 25px;">Зашифрованный канал связи со Штабом</p>
+                    <button class="btn-titan" onclick="startTitanLoad()">ОТПРАВИТЬ ЗАПРОС</button>
+                    <button class="btn-titan" style="background:rgba(255,255,255,0.05); color:var(--accent); border: 1px solid rgba(0,242,255,0.2);" onclick="alert('Архив Штаба пуст.')">🔍 АРХИВ</button>
+                </div>
+                <div id="titan-loader" class="hidden">
+                    <div class="loader-lmsh"><span>Л</span><span>М</span><span>С</span><span>Х</span></div>
+                    <p style="font-size: 11px; opacity: 0.5; letter-spacing: 1px;">УСТАНОВКА СОЕДИНЕНИЯ...</p>
+                </div>
             </div>
-            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8YweWa9ZP1nQKbrgvZvPiwVa2DLlaRgM-03xRFUJ5SSTv1WiSXpE9S6mG3aMtZhRahw/exec";
-    const versions = ["1.0", "2.0", "2.2", "2.5", "2.8", "2.9", "3.0", "3.1", "3.2", "3.3"];
-    let mode = 0; // 0-Chat, 1-Packs, 2-Titan
+    const versions = ["1.0", "2.0", "2.2", "2.5", "2.8", "3.0", "3.1"];
+    let currentMode = 1; // Начинаем с режима Паки (как на скриншоте)
+
+    function toggleMenu() {
+        if (window.innerWidth <= 768) {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+    }
 
     function rotateMode() {
-        mode = (mode + 1) % 3;
-        document.getElementById('chat-mode').style.display = (mode === 0) ? 'flex' : 'none';
-        document.getElementById('packs-mode').style.display = (mode === 1) ? 'block' : 'none';
-        document.getElementById('titan-screen').style.display = (mode === 2) ? 'block' : 'none';
+        currentMode = (currentMode + 1) % 3;
+        const modes = ['mode-chat', 'mode-packs', 'mode-titan'];
+        const labels = ['Режим: Паки', 'Режим: Titan', 'Режим: Оракул'];
         
-        const labels = ["РЕЖИМ: ПАКИ", "РЕЖИМ: TITAN", "РЕЖИМ: ОРАКУЛ"];
-        document.getElementById('mode-label').innerText = labels[mode];
-        if(mode === 1) renderPacks();
+        modes.forEach((m, i) => document.getElementById(m).classList.toggle('hidden', i !== currentMode));
+        document.getElementById('mode-label').innerText = labels[currentMode];
     }
 
     function renderPacks() {
         const list = document.getElementById('packs-list');
         list.innerHTML = "";
         versions.forEach(v => {
-            list.innerHTML += `<div class="pack-card"><div class="pack-name">KL ${v}</div><a href="packs/Kosmo_Level_${v}.worldpack" class="dl-btn" download>Скачать</a></div>`;
+            list.innerHTML += `
+                <div class="item-card">
+                    <div class="item-name">KL ${v}</div>
+                    <a href="#" class="download-btn">Скачать</a>
+                </div>`;
         });
+    }
+
+    function startTitanLoad() {
+        document.getElementById('titan-main-ui').classList.add('hidden');
+        document.getElementById('titan-loader').classList.remove('hidden');
+        setTimeout(() => {
+            alert("Канал TITAN: Соединение установлено. Ошибка авторизации PIN-кода.");
+            document.getElementById('titan-main-ui').classList.remove('hidden');
+            document.getElementById('titan-loader').classList.add('hidden');
+        }, 2500);
     }
 
     function send() {
         const inp = document.getElementById('user-in');
         const val = inp.value.trim(); if(!val) return;
-        addMsg(val, 'user-msg');
-        inp.value = "";
+        const chat = document.getElementById('chat-flow');
+        
+        chat.innerHTML += `<div class="msg user-msg">${val}</div>`;
+        chat.scrollTop = chat.scrollHeight;
         
         setTimeout(() => {
-            const low = val.toLowerCase();
-            if(low.includes("басс")) {
-                addMsg("Я попробую создать трек, правда не на моей модели... А, нет, мне не разрешили. АХАХАХАХА!", "ai-msg");
-            } else if(versions.includes(val)) {
-                addMsg(`Билд ${val} найден. Ссылка доступна во вкладке ПАКИ.`, "ai-msg");
-            } else {
-                addMsg("Запрос принят штабом ЛМСХ.", "ai-msg");
+            let resp = "Запрос отправлен Главному инженеру Ламирку.";
+            if(val.toLowerCase().includes("басс") || val.toLowerCase().includes("трек")) {
+                resp = "Я попробую передать Снежинке, но Мурзик против. АХАХАХАХА! 🔑)";
             }
-        }, 500);
+            chat.innerHTML += `<div class="msg ai-msg">${resp}</div>`;
+            chat.scrollTop = chat.scrollHeight;
+        }, 600);
+        inp.value = "";
     }
 
-    function addMsg(text, type) {
-        const chat = document.getElementById('chat-flow');
-        const d = document.createElement('div'); d.className = 'msg ' + type;
-        d.innerText = text;
-        chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
-    }
-
-    // ТИТАН ЛОГИКА
-    function startSystem() {
-        let t = 60;
-        const timerDiv = document.getElementById('timer');
-        const interval = setInterval(() => {
-            t--;
-            timerDiv.innerText = `00:${t < 10 ? '0'+t : t}`;
-            if(t <= 0) { clearInterval(interval); alert("Шлюз открыт!"); timerDiv.innerText = "01:00"; }
-        }, 20);
-    }
+    renderPacks();
 </script>
 </body>
 </html>
