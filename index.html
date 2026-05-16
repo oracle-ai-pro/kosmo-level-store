@@ -2,62 +2,72 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosmo Level Store 🔑)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kosmo Level Store | Главная 🔑)</title>
     <style>
         :root {
-            --bg: #0f0f1a;
-            --accent: #5d3fd3;
-            --card-bg: #1a1a2e;
+            --bg: #010103;
+            --accent: #02b6ed;
+            --purple: #e60ced;
+            --card-bg: rgba(26, 26, 46, 0.5);
             --text: #ffffff;
+            --border: rgba(255, 255, 255, 0.1);
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 
         body {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
+            background: radial-gradient(circle at top right, rgba(230, 12, 237, 0.03), transparent), radial-gradient(circle at bottom left, rgba(2, 182, 237, 0.03), transparent);
         }
 
-        /* --- НАВИГАЦИЯ --- */
+        /* --- НАВИГАЦИЯ (КОНСТАНТА ДЛЯ ВСЕХ СТРАНИЦ) --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 5%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--accent);
+            padding: 10px 5%;
+            background: #010103;
+            height: 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .logo {
-            font-size: 1.4rem;
+        .logo-nav {
+            font-size: 1.1rem;
             font-weight: bold;
-            letter-spacing: 1px;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 0.5px;
         }
 
-        .menu {
+        .menu-nav {
             display: flex;
             gap: 20px;
         }
 
-        .menu a {
-            color: white;
+        .menu-nav a {
+            color: #ffffff;
             text-decoration: none;
-            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0.8;
             transition: 0.3s;
-            font-size: 1rem;
+            font-weight: 400;
         }
 
-        .menu a:hover {
+        .menu-nav a:hover, .menu-nav a.active {
+            opacity: 1;
             color: var(--accent);
         }
 
-        /* --- БУРГЕР (ДЛЯ ТЕЛЕФОНА) --- */
+        /* --- БУРГЕР МЕНЮ --- */
         .burger {
             display: none;
             flex-direction: column;
@@ -67,109 +77,168 @@
         }
 
         .burger span {
-            width: 25px;
-            height: 3px;
+            width: 22px;
+            height: 2px;
             background: white;
             border-radius: 2px;
             transition: 0.3s;
         }
 
-        /* --- СЕТКА КАРТОЧЕК --- */
+        /* --- ОСНОВНОЙ КОНТЕНТ --- */
         .main-container {
-            padding: 30px 5%;
+            flex-grow: 1;
+            padding: 40px 5%;
             text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #02b6ed 0%, #e60ced 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.6;
+            margin-bottom: 40px;
+        }
+
+        /* --- СЕТКА ПАКОВ --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            gap: 30px;
+            padding: 10px 0;
         }
 
         .pack-card {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 24px;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s ease;
+            border: 1px solid var(--border);
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
 
         .pack-card:hover {
             border-color: var(--accent);
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(2, 182, 237, 0.1);
         }
 
-        .pack-card img {
+        /* Стильная CSS-заглушка вместо ломающихся картинок */
+        .pack-img-preview {
             width: 100%;
             height: 160px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            background: #252545; /* Заглушка если фото не грузится */
+            border-radius: 16px;
+            margin-bottom: 20px;
+            background: #151525;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ) --- */
+        .pack-img-preview::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(2, 182, 237, 0.05), rgba(230, 12, 237, 0.05));
+        }
+
+        .pack-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        /* --- МОДАЛЬНОЕ ОКНО --- */
         .overlay {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(1, 1, 3, 0.85);
+            backdrop-filter: blur(15px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
 
         .modal {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 85%;
+            background: #0d0d14;
+            padding: 35px;
+            border-radius: 32px;
+            max-width: 450px;
+            width: 90%;
             position: relative;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--border);
             text-align: left;
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: iosPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes iosPop {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(5px); }
+            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 2rem;
+            top: 20px;
+            right: 25px;
+            font-size: 1.8rem;
             cursor: pointer;
-            line-height: 1;
+            opacity: 0.5;
+            transition: 0.2s;
         }
+        .close-btn:hover { opacity: 1; color: var(--purple); }
+
+        .modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }
+        .modal p { font-size: 0.95rem; opacity: 0.7; line-height: 1.5; margin-bottom: 12px; }
 
         .download-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: var(--accent);
-            color: white;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 14px;
+            background: #ffffff;
+            color: #000000;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
             border: none;
             cursor: pointer;
+            transition: 0.2s;
         }
+
+        .download-btn:active { transform: scale(0.97); opacity: 0.9; }
 
         /* --- АДАПТИВНОСТЬ --- */
         @media (max-width: 768px) {
             .burger { display: flex; }
 
-            .menu {
+            .menu-nav {
                 display: none; 
                 flex-direction: column;
                 position: fixed;
@@ -178,27 +247,26 @@
                 background: var(--bg);
                 justify-content: center;
                 align-items: center;
-                gap: 40px;
+                gap: 35px;
                 z-index: 10000;
             }
 
-            .menu.active { display: flex; }
-            
-            .menu a { font-size: 1.5rem; }
+            .menu-nav.active { display: flex; }
+            .menu-nav a { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">Kosmo Level Store 🔑)</div>
+    <a href="index.html" class="logo-nav">Kosmo Level Store 🔑)</a>
     <div class="burger" onclick="toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
     </div>
-    <div class="menu" id="navMenu">
-        <a href="index.html" onclick="toggleMenu()">Главная</a>
+    <div class="menu-nav" id="navMenu">
+        <a href="index.html" class="active">Главная</a>
         <a href="kosmogram.html">Kosmogram</a>
         <a href="helper.html">Помощник</a>
         <a href="about.html">О сайте</a>
@@ -207,16 +275,16 @@
 
 <div class="main-container">
     <h1>Добро пожаловать в Штаб ЛМСХ</h1>
-    <p>Выбирай нужный пак уровней для загрузки</p>
+    <p class="subtitle">Выбирай нужный пак уровней для загрузки</p>
 
     <div class="grid">
         <div class="pack-card" onclick="openPack('abp')">
-            <img src="https://via.placeholder.com/300x160/252545/ffffff?text=A+Better+Place" alt="ABP">
+            <div class="pack-img-preview">ABP</div>
             <h3>A Better Place 1.3.6</h3>
         </div>
 
         <div class="pack-card" onclick="openPack('kl33')">
-            <img src="https://via.placeholder.com/300x160/252545/ffffff?text=Kosmo+Level+3.3" alt="KL 3.3">
+            <div class="pack-img-preview">KL 3.3</div>
             <h3>Kosmo Level 3.3</h3>
         </div>
     </div>
@@ -230,7 +298,6 @@
 </div>
 
 <script>
-    // Функция меню-бургера
     function toggleMenu() {
         if (window.innerWidth <= 768) {
             const menu = document.getElementById('navMenu');
@@ -238,7 +305,6 @@
         }
     }
 
-    // Логика всплывающих окон
     function openPack(packId) {
         const content = document.getElementById('modalContent');
         const overlay = document.getElementById('modalOverlay');
@@ -246,15 +312,13 @@
         if (packId === 'abp') {
             content.innerHTML = `
                 <h2>A Better Place 1.3.6</h2>
-                <hr style="border: 0.5px solid var(--accent); margin: 15px 0;">
                 <p>Самый масштабный проект штаба. Включает в себя обновленные текстуры и исправленные баги сенсоров.</p>
-                <p><b>Дата обновления:</b> 12 мая 2026</p>
+                <p style="font-size: 12px; opacity:0.5;"><b>Дата обновления:</b> 12 мая 2026</p>
                 <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
             `;
         } else if (packId === 'kl33') {
             content.innerHTML = `
                 <h2>Kosmo Level 3.3</h2>
-                <hr style="border: 0.5px solid var(--accent); margin: 15px 0;">
                 <p>Классическая сборка уровней. Идеально подходит для стабильной игры на мобильных устройствах.</p>
                 <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
             `;
@@ -267,7 +331,6 @@
         document.getElementById('modalOverlay').style.display = 'none';
     }
 
-    // Закрытие по клавише Esc
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closePack();
     });
