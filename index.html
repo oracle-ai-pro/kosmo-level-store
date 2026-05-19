@@ -2,346 +2,57 @@
 <html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kosmo Level Store | Главная 🔑)</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     <script src="settings.js"></script>
-
     <style>
-        :root {
-            /* Дефолтные значения (Тёмная тема) */
-            --bg: #010103;
-            --accent: #02b6ed;
-            --purple: #e60ced;
-            --card-bg: rgba(26, 26, 46, 0.5);
-            --text: #ffffff;
-            --border: rgba(255, 255, 255, 0.1);
-            
-            /* Соответствие Material You переменным из settings.js */
-            --md-sys-color-surface: #211f26;
-            --md-sys-color-surface-variant: #49454f;
-            --md-sys-color-primary: #02b6ed;
-        }
-
-        /* Автоматическая перекраска под Светлую тему из LocalStorage */
-        [data-theme="light"] {
-            --bg: #fef7ff;
-            --text: #1d1b20;
-            --card-bg: rgba(231, 224, 236, 0.7);
-            --border: rgba(0, 0, 0, 0.1);
-            --md-sys-color-surface: #f3edf7;
-            --md-sys-color-surface-variant: #e7e0ec;
-        }
-
-        /* Кастомизация цветового акцента из настроек */
-        [data-accent="purple"] { --accent: #d0bcff; --md-sys-color-primary: #d0bcff; }
-        [data-accent="blue"] { --accent: #a8c7fa; --md-sys-color-primary: #a8c7fa; }
-        [data-accent="green"] { --accent: #6ad1a3; --md-sys-color-primary: #6ad1a3; }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            background: radial-gradient(circle at top right, rgba(230, 12, 237, 0.03), transparent), radial-gradient(circle at bottom left, rgba(2, 182, 237, 0.03), transparent);
-            transition: background 0.3s, color 0.3s;
-            padding-bottom: 40px;
-        }
-
-        /* --- СТИЛИ ДЛЯ СКВОЗНОЙ НАВИГАЦИИ ИЗ SETTINGS.JS --- */
-        .nav-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--bg);
-            padding: 10px 5%;
-            height: 60px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        .nav-logo {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.3s;
-            font-weight: 400;
-            padding: 6px 12px;
-            border-radius: 14px;
-        }
-        .nav-links a:hover, .nav-links a.active {
-            opacity: 1;
-            color: var(--accent);
-            background-color: var(--card-bg);
-        }
-
-        /* --- ОСНОВНОЙ КОНТЕНТ --- */
-        .main-container {
-            flex-grow: 1;
-            padding: 40px 5%;
-            text-align: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--accent) 0%, #e60ced 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.6;
-            margin-bottom: 40px;
-        }
-
-        /* --- СЕТКА ПАКОВ --- */
+        /* (Твои стили из начала переписки + добавь эти для сетки) */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
-            padding: 10px 0;
+            padding: 20px 0;
         }
-
         .pack-card {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border-radius: 24px;
             padding: 24px;
             cursor: pointer;
             border: 1px solid var(--border);
-            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex;
-            flex-direction: column;
+            transition: 0.3s;
         }
-
-        .pack-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-6px);
-            box-shadow: 0 15px 30px rgba(2, 182, 237, 0.1);
-        }
-
-        .pack-img-preview {
-            width: 100%;
-            height: 160px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            background: #151525;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pack-img-preview::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(2, 182, 237, 0.05), rgba(230, 12, 237, 0.05));
-        }
-
-        .pack-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        /* --- МОДАЛЬНОЕ ОКНО --- */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(1, 1, 3, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal {
-            background: #0d0d14;
-            color: #ffffff;
-            padding: 35px;
-            border-radius: 32px;
-            max-width: 450px;
-            width: 90%;
-            position: relative;
-            border: 1px solid var(--border);
-            text-align: left;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            animation: iosPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        [data-theme="light"] .modal {
-            background: #f3edf7;
-            color: #1d1b20;
-        }
-
-        @keyframes iosPop {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); filter: blur(5px); }
-            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            opacity: 0.5;
-            transition: 0.2s;
-        }
-        .close-btn:hover { opacity: 1; color: var(--purple); }
-
-        .modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; }
-        .modal p { font-size: 0.95rem; opacity: 0.7; line-height: 1.5; margin-bottom: 12px; }
-
-        .download-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            margin-top: 25px;
-            padding: 14px;
-            background: var(--accent);
-            color: #000000;
-            text-decoration: none;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .download-btn:active { transform: scale(0.97); opacity: 0.9; }
-
-        /* --- АДАПТИВНОСТЬ МОБИЛЬНОЙ НАВИГАЦИИ (КОМПАКТНЫЙ ВАРИАНТ) --- */
-        @media (max-width: 768px) {
-            .nav-header {
-                height: auto;
-                flex-direction: column;
-                padding: 15px 2%;
-                gap: 12px;
-            }
-            .nav-links {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .nav-links a {
-                font-size: 0.85rem;
-                padding: 6px 10px;
-            }
-        }
+        .pack-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .pack-img { height: 120px; background: #151525; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-weight: bold; opacity: 0.5; }
     </style>
 </head>
 <body>
 
     <main class="main-container">
-        <h1>Добро пожаловать в Штаб ЛМСХ</h1>
-        <p class="subtitle" id="welcome-subtitle">Выбирай нужный пак уровней для загрузки</p>
+        <h1>Штаб ЛМСХ</h1>
+        <p class="subtitle">Выбирай нужный пак для загрузки</p>
 
-        <div class="grid">
-            <div class="pack-card" onclick="openPack('abp')">
-                <div class="pack-img-preview">ABP</div>
-                <h3>A Better Place 1.3.6</h3>
-            </div>
-
-            <div class="pack-card" onclick="openPack('kl33')">
-                <div class="pack-img-preview">KL 3.3</div>
-                <h3>Kosmo Level 3.3</h3>
-            </div>
-        </div>
+        <div class="grid" id="packs-grid"></div>
     </main>
 
-    <div id="modalOverlay" class="overlay" onclick="closePack()">
-        <div class="modal" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="closePack()">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
     <script>
-        // Приветствие по имени из LocalStorage, если оно сохранено
+        // Ждем загрузки, чтобы PACKS_DATA точно подгрузился из settings.js
         document.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('lmsh_username');
-            if (savedName && savedName.trim() !== "") {
-                document.getElementById('welcome-subtitle').innerText = `${savedName}, выбирай нужный пак уровней для загрузки`;
-            }
-        });
-
-        // Логика модальных окон паков
-        function openPack(packId) {
-            const content = document.getElementById('modalContent');
-            const overlay = document.getElementById('modalOverlay');
-
-            if (packId === 'abp') {
-                content.innerHTML = `
-                    <h2>A Better Place 1.3.6</h2>
-                    <p>Самый масштабный проект штаба. Включает в себя обновленные текстуры и исправленные баги сенсоров.</p>
-                    <p style="font-size: 12px; opacity:0.5;"><b>Дата обновления:</b> 12 мая 2026</p>
-                    <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
+            const grid = document.getElementById('packs-grid');
+            
+            PACKS_DATA.forEach(pack => {
+                const card = document.createElement('div');
+                card.className = 'pack-card';
+                card.onclick = () => alert('Скачивание: ' + pack.title);
+                
+                card.innerHTML = `
+                    <div class="pack-img">${pack.category.toUpperCase()}</div>
+                    <h3>${pack.title}</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">${pack.description || 'Версия: ' + (pack.version || '1.0')}</p>
                 `;
-            } else if (packId === 'kl33') {
-                content.innerHTML = `
-                    <h2>Kosmo Level 3.3</h2>
-                    <p>Классическая сборка уровней. Идеально подходит для стабильной игры на мобильных устройствах.</p>
-                    <button class="download-btn" onclick="alert('Начинаем загрузку...')">Скачать Пак</button>
-                `;
-            }
-
-            overlay.style.display = 'flex';
-        }
-
-        function closePack() {
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closePack();
+                grid.appendChild(card);
+            });
         });
     </script>
-
 </body>
 </html>
