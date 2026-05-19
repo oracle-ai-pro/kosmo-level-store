@@ -11,28 +11,20 @@ const NAV_ITEMS = [
 // 2. База данных паков
 const PACKS_DATA = [
     { id: 'abp_official', category: 'official', title: 'A Better Place', description: 'Скачать или обновить оригинальную игру.', type: 'link' },
-    { id: 'bad_guest', category: 'purple', title: 'Не хороший гость', description: 'Пак из серии Purple One Continue. На данный момент недоступен для загрузки.', status: 'locked' },
+    { id: 'bad_guest', category: 'purple', title: 'Не хороший гость', description: 'Пак из серии Purple One Continue. Недоступен.', status: 'locked' },
     { id: 'kl_34', category: 'kosmo', version: '3.4', title: 'Kosmo Level 3.4', type: 'worldpack' },
     { id: 'kl_33', category: 'kosmo', version: '3.3', title: 'Kosmo Level 3.3', type: 'worldpack' },
     { id: 'kl_32', category: 'kosmo', version: '3.2', title: 'Kosmo Level 3.2', type: 'worldpack' },
     { id: 'kl_31', category: 'kosmo', version: '3.1', title: 'Kosmo Level 3.1', type: 'worldpack' },
     { id: 'kl_30', category: 'kosmo', version: '3.0', title: 'Kosmo Level 3.0', type: 'worldpack' },
-    { id: 'kl_29', category: 'kosmo', version: '2.9', title: 'Kosmo Level 2.9', type: 'worldpack' },
-    { id: 'kl_28', category: 'kosmo', version: '2.8', title: 'Kosmo Level 2.8', type: 'worldpack' },
-    { id: 'kl_25', category: 'kosmo', version: '2.5', title: 'Kosmo Level 2.5', type: 'worldpack' },
-    { id: 'kl_22', category: 'kosmo', version: '2.2', title: 'Kosmo Level 2.2', type: 'worldpack' },
-    { id: 'kl_20', category: 'kosmo', version: '2.0', title: 'Kosmo Level 2.0', type: 'worldpack' },
-    { id: 'kl_10', category: 'kosmo', version: '1.0', title: 'Kosmo Level 1.0', type: 'worldpack' },
-    { id: 'kl_281', category: 'preview', title: 'Kosmo Level 2.8.1' },
-    { id: 'tl_22', category: 'preview', title: 'Traitor Level 2.2' },
-    { id: 'tl_21', category: 'preview', title: 'Traitor Level 2.1' },
-    { id: 'tl_20', category: 'preview', title: 'Traitor Level 2.0' },
-    { id: 'lore_lumi', category: 'lore', title: 'Как Люми попала сюда?' },
-    { id: 'lore_flight', category: 'lore', title: 'Летание' }
+    { id: 'lore_lumi', category: 'lore', title: 'Как Люми попала сюда?' }
 ];
 
 // 3. Функция сборки навигации
 function renderNavigation() {
+    // Проверяем, существует ли уже навигация, чтобы не дублировать
+    if (document.querySelector('.nav-header')) return;
+
     const navHTML = `
         <header class="nav-header">
             <div class="nav-logo">
@@ -52,18 +44,16 @@ function renderNavigation() {
     document.body.insertAdjacentHTML('afterbegin', navHTML);
 }
 
-// Запуск при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    renderNavigation();
-});
-// --- ФУНКЦИЯ ПРИМЕНЕНИЯ ГЛОБАЛЬНЫХ НАСТРОЕК ---
-function applyThemeSettings() {
+// 4. Мгновенный запуск
+// Запускаем сразу, чтобы меню появилось до отрисовки остального контента
+renderNavigation();
+
+// Логика темы (если нужно изменить цвета из кода)
+function applyTheme() {
     const theme = localStorage.getItem('lmsh_theme') || 'dark';
     const accent = localStorage.getItem('lmsh_accent') || 'purple';
-    
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-accent', accent);
 }
 
-// Вызываем её сразу при загрузке любой страницы
-document.addEventListener('DOMContentLoaded', applyThemeSettings);
+applyTheme();
