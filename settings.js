@@ -56,3 +56,14 @@ function renderNavigation() {
 document.addEventListener('DOMContentLoaded', () => {
     renderNavigation();
 });
+// --- ФУНКЦИЯ ПРИМЕНЕНИЯ ГЛОБАЛЬНЫХ НАСТРОЕК ---
+function applyThemeSettings() {
+    const theme = localStorage.getItem('lmsh_theme') || 'dark';
+    const accent = localStorage.getItem('lmsh_accent') || 'purple';
+    
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-accent', accent);
+}
+
+// Вызываем её сразу при загрузке любой страницы
+document.addEventListener('DOMContentLoaded', applyThemeSettings);
