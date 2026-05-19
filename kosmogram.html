@@ -1,91 +1,191 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kosmogram | Штаб ЛМСХ</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    <script src="settings.js"></script>
+
     <style>
         :root {
+            /* Базовые цвета для Темной темы по умолчанию */
             --bg: #0f0f1a;
             --accent: #5d3fd3;
             --card-bg: #1a1a2e;
             --text: #ffffff;
-        }
-        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
+            --border: rgba(255, 255, 255, 0.05);
 
-        /* Навигация (такая же как на главной) */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--accent); position: sticky; top: 0; z-index: 1000;
+            /* Переменные навигации для стыковки с settings.js */
+            --md-sys-color-surface: #1a1a2e;
+            --md-sys-color-surface-variant: rgba(255, 255, 255, 0.08);
+            --md-sys-color-primary: #5d3fd3;
         }
-        .logo { font-size: 1.2rem; font-weight: bold; }
-        .menu a { color: white; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
 
+        /* Перекраска под Светлую тему из LocalStorage */
+        [data-theme="light"] {
+            --bg: #fef7ff;
+            --text: #1d1b20;
+            --card-bg: #f3edf7;
+            --border: rgba(0, 0, 0, 0.08);
+            --md-sys-color-surface: #f3edf7;
+            --md-sys-color-surface-variant: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Динамические цветовые акценты из Настроек */
+        [data-accent="purple"] { --accent: #d0bcff; --md-sys-color-primary: #d0bcff; }
+        [data-accent="blue"] { --accent: #a8c7fa; --md-sys-color-primary: #a8c7fa; }
+        [data-accent="green"] { --accent: #6ad1a3; --md-sys-color-primary: #6ad1a3; }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            padding-bottom: 50px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* --- СТИЛИ ДЛЯ АВТОМАТИЧЕСКОЙ НАВИГАЦИИ ИЗ SETTINGS.JS --- */
+        .nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg);
+            padding: 10px 5%;
+            height: 60px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+            font-weight: 400;
+            padding: 6px 12px;
+            border-radius: 14px;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            opacity: 1;
+            color: var(--accent);
+            background-color: var(--card-bg);
+        }
+
+        /* --- КОНТЕНТ ЛЕНТЫ --- */
         .container { max-width: 600px; margin: 30px auto; padding: 0 20px; }
         
-        /* Стиль поста */
         .post {
-            background: var(--card-bg); border-radius: 20px; padding: 20px;
-            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 20px;
+            margin-bottom: 25px; 
+            border: 1px solid var(--border);
+            transition: background 0.3s, border-color 0.3s;
         }
         .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .avatar { width: 40px; height: 40px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .avatar { 
+            width: 40px; 
+            height: 40px; 
+            background: var(--accent); 
+            color: #000; /* Темный текст букв аватарок для контраста */
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            transition: background 0.3s;
+        }
+        [data-theme="dark"] .avatar { color: #fff; }
         
         .video-container {
             width: 100%; height: 300px; background: #000; border-radius: 12px;
             display: flex; align-items: center; justify-content: center; margin: 15px 0;
             border: 1px solid var(--accent);
+            transition: border-color 0.3s;
         }
 
         .status-tag {
             display: inline-block; padding: 5px 12px; border-radius: 20px;
-            background: #ff4757; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
+            background: #ff4757; color: #fff; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
+        }
+
+        /* Адаптивность для мобилок */
+        @media (max-width: 768px) {
+            .nav-header {
+                height: auto;
+                flex-direction: column;
+                padding: 15px 2%;
+                gap: 12px;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .nav-links a {
+                font-size: 0.85rem;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo">Kosmogram 🔑)</div>
-    <div class="menu">
-        <a href="index.html">Назад в Store</a>
-    </div>
-</nav>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 30px;">Лента обновлений</h1>
 
-<div class="container">
-    <h1 style="text-align: center;">Лента обновлений</h1>
-
-    <div class="post">
-        <div class="post-header">
-            <div class="avatar">Л</div>
-            <div>
-                <div style="font-weight: bold;">Ламирк (Главный инженер)</div>
-                <div style="font-size: 0.8rem; opacity: 0.6;">12 мая 2026</div>
+        <div class="post">
+            <div class="post-header">
+                <div class="avatar">Л</div>
+                <div>
+                    <div style="font-weight: bold;">Ламирк (Главный инженер)</div>
+                    <div style="font-size: 0.8rem; opacity: 0.6;">12 мая 2026</div>
+                </div>
             </div>
-        </div>
-        
-        <div class="status-tag">⚡ НОСТАЛЬГИЯ</div>
-        <p>Нашли старое видео по таблице Бинго! Тот самый момент, когда "Батарея разряжена" стала лицом канала. Смотрим и плачем (от смеха).</p>
-        
-        <div class="video-container">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/I_BjAJrMI-g" frameborder="0" allowfullscreen style="border-radius: 12px;"></iframe>
-        </div>
-        
-        <p style="font-size: 0.9rem; opacity: 0.8;">Кстати, Полина, если ты это читаешь — Бинго всё ещё в силе! И будет 2 часть</p>
-    </div>
-
-    <div class="post">
-        <div class="post-header">
-            <div class="avatar">М</div>
-            <div>
-                <div style="font-weight: bold;">Мурзик (Помощница)</div>
-                <div style="font-size: 0.8rem; opacity: 0.6;">Сегодня днем</div>
+            
+            <div class="status-tag">⚡ НОСТАЛЬГИЯ</div>
+            <p>Нашли старое видео по таблице Бинго! Тот самый момент, когда "Батарея разряжена" стала лицом канала. Смотрим и плачем (от смеха).</p>
+            
+            <div class="video-container">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/I_BjAJrMI-g" frameborder="0" allowfullscreen style="border-radius: 12px;"></iframe>
             </div>
+            
+            <p style="font-size: 0.9rem; opacity: 0.8;">Кстати, Полина, если ты это читаешь — Бинго всё ещё в силе! И будет 2 часть</p>
         </div>
-        <p>Штаб ЛМСХ переехал на GitHub Pages. Теперь нас не заблокировать! В июне ждем LMSH-2.0. Готовьте свои планшеты!</p>
+
+        <div class="post">
+            <div class="post-header">
+                <div class="avatar">М</div>
+                <div>
+                    <div style="font-weight: bold;">Мурзик (Помощница)</div>
+                    <div style="font-size: 0.8rem; opacity: 0.6;">Сегодня днем</div>
+                </div>
+            </div>
+            <p>Штаб ЛМСХ переехал на GitHub Pages. Теперь нас не заблокировать! В июне ждем LMSH-2.0. Готовьте свои планшеты!</p>
+        </div>
     </div>
-</div>
 
 </body>
 </html>
