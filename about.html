@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>О сайте & Настройки — Штаб ЛМСХ</title>
+    <title>О сайте & Настройки — ЛМСХ</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     <style>
-        /* Базовые стили Material You и переменные тем */
-        :root[data-theme="dark"] {
+        :root {
+            /* Базовая темная тема (по умолчанию) */
             --md-sys-color-background: #141218;
             --md-sys-color-on-background: #e6e1e5;
             --md-sys-color-surface: #211f26;
@@ -17,10 +17,12 @@
             --md-sys-color-primary: #d0bcff;
             --md-sys-color-on-primary: #381e72;
             --md-sys-color-primary-container: #4f378b;
+            --md-sys-color-on-primary-container: #eaddff;
             --md-sys-color-outline: #938f99;
         }
 
-        :root[data-theme="light"] {
+        [data-theme="light"] {
+            /* Светлая тема */
             --md-sys-color-background: #fef7ff;
             --md-sys-color-on-background: #1d1b20;
             --md-sys-color-surface: #f3edf7;
@@ -30,159 +32,183 @@
             --md-sys-color-primary: #6750a4;
             --md-sys-color-on-primary: #ffffff;
             --md-sys-color-primary-container: #eaddff;
+            --md-sys-color-on-primary-container: #21005d;
             --md-sys-color-outline: #79747e;
         }
 
-        /* Тематические акценты (кастомные цвета из настроек) */
-        :root[data-accent="lumi"] { --md-sys-color-primary: #ba8fff; }
-        :root[data-accent="murzik"] { --md-sys-color-primary: #81c784; }
-        :root[data-accent="hq"] { --md-sys-color-primary: #64b5f6; }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        /* Цветовые акценты (Кастомизация из LocalStorage) */
+        [data-accent="purple"] { --md-sys-color-primary: #d0bcff; }
+        [data-accent="blue"] { --md-sys-color-primary: #a8c7fa; }
+        [data-accent="green"] { --md-sys-color-primary: #6ad1a3; }
 
         body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--md-sys-color-background);
             color: var(--md-sys-color-on-background);
-            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 80px; /* Отступ под нижний навибар */
+        }
+
+        /* Сквозная навигационная панель (Верхняя) */
+        .nav-header {
             display: flex;
-            justify-content: center;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--md-sys-color-surface);
+            padding: 12px 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--md-sys-color-primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+        .nav-links a {
+            color: var(--md-sys-color-on-surface-variant);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-primary);
         }
 
-        .container {
-            width: 100%;
-            max-width: 800px;
+        /* Контейнер контента */
+        .main-container {
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 0 16px;
         }
 
-        /* Навигация по табам (Material 3 Tabs) */
-        .tabs {
+        /* Вкладки (Tabs) в стиле Material 3 */
+        .tabs-container {
             display: flex;
             border-bottom: 1px solid var(--md-sys-color-outline);
             margin-bottom: 24px;
         }
-
         .tab-btn {
             flex: 1;
             background: none;
             border: none;
+            padding: 16px;
             color: var(--md-sys-color-on-surface-variant);
-            padding: 14px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 8px;
             position: relative;
+            transition: 0.2s;
         }
-
+        .tab-btn:hover {
+            background-color: rgba(255,255,255,0.05);
+        }
         .tab-btn.active {
             color: var(--md-sys-color-primary);
         }
-
         .tab-btn.active::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 20%;
-            right: 20%;
+            left: 25%;
+            width: 50%;
             height: 3px;
             background-color: var(--md-sys-color-primary);
             border-radius: 3px 3px 0 0;
         }
-
         .tab-content {
             display: none;
         }
-
         .tab-content.active {
             display: block;
         }
 
-        /* Стили заголовков и карточек */
-        h2 {
-            margin: 24px 0 16px 0;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--md-sys-color-primary);
-        }
-
+        /* Карточки и блоки */
         .card {
             background-color: var(--md-sys-color-surface);
             border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid var(--md-sys-color-surface-variant);
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        h2 {
+            margin-top: 0;
+            color: var(--md-sys-color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Карточки Команды */
+        /* Команда Штаба ЛМСХ */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
+            margin-top: 16px;
         }
-
-        .member-card {
-            background-color: var(--md-sys-color-surface);
-            border-radius: 12px;
+        .team-member {
+            background-color: var(--md-sys-color-surface-variant);
             padding: 16px;
+            border-radius: 12px;
             text-align: center;
-            border: 1px solid var(--md-sys-color-surface-variant);
         }
-
-        .member-icon {
-            font-size: 40px;
+        .team-member .icon {
+            font-size: 32px;
             margin-bottom: 8px;
-            display: block;
         }
-
-        .member-role {
-            font-size: 13px;
+        .team-member .name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .team-member .role {
+            font-size: 14px;
             color: var(--md-sys-color-on-surface-variant);
             margin-top: 4px;
         }
 
-        /* Настройки (Формы и элементы управления) */
-        .setting-item {
+        /* Элементы Настроек */
+        .setting-row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--md-sys-color-surface-variant);
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-
-        .setting-item:last-child {
-            border-bottom: none;
+        .setting-row:last-child { border-bottom: none; }
+        .setting-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
+        .setting-title { font-weight: 500; font-size: 16px; }
+        .setting-desc { font-size: 13px; color: var(--md-sys-color-on-surface-variant); }
 
-        .setting-info h4 {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .setting-info p {
-            font-size: 13px;
-            color: var(--md-sys-color-on-surface-variant);
-        }
-
-        /* Элементы управления Material Design */
+        /* Кастомные элементы управления */
         select, input[type="text"] {
             background-color: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface);
+            color: var(--md-sys-color-on-background);
             border: 1px solid var(--md-sys-color-outline);
             padding: 8px 12px;
             border-radius: 8px;
+            font-size: 14px;
             outline: none;
         }
-
         /* Переключатель (Switch) */
         .switch {
             position: relative;
@@ -190,244 +216,272 @@
             width: 52px;
             height: 32px;
         }
-
         .switch input { opacity: 0; width: 0; height: 0; }
-
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
             background-color: var(--md-sys-color-surface-variant);
+            transition: .3s; border-radius: 32px;
             border: 2px solid var(--md-sys-color-outline);
-            border-radius: 32px;
-            transition: .3s;
         }
-
         .slider:before {
-            position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px;
-            background-color: var(--md-sys-color-outline);
-            border-radius: 50%;
-            transition: .3s;
+            position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px;
+            background-color: var(--md-sys-color-outline); transition: .3s; border-radius: 50%;
         }
-
         input:checked + .slider {
             background-color: var(--md-sys-color-primary-container);
             border-color: var(--md-sys-color-primary);
         }
-
         input:checked + .slider:before {
             transform: translateX(20px);
             background-color: var(--md-sys-color-primary);
         }
 
-        /* Секция Наших Проектов */
-        .project-link {
+        /* Блок Наших Проектов */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .project-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            text-decoration: none;
-            color: var(--md-sys-color-on-background);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 8px;
+            padding: 12px 16px;
             background-color: var(--md-sys-color-surface-variant);
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.2s;
         }
-
-        .project-link:hover {
-            opacity: 0.9;
+        .project-item:hover {
+            transform: translateX(5px);
+            background-color: rgba(255,255,255,0.08);
         }
-
-        /* Инженерный лог (для режима разработчика) */
-        #dev-console {
-            display: none;
-            background: #000;
-            color: #0f0;
-            font-family: monospace;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 16px;
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .project-status {
             font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            font-weight: 600;
         }
 
-        body.dev-active #dev-console {
-            display: block;
+        /* Инженерный подвал */
+        .footer-credits {
+            text-align: center;
+            font-size: 13px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-top: 32px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('about-tab')">
-            <span class="material-symbols-outlined">info</span> О проекте
-        </button>
-        <button class="tab-btn" onclick="switchTab('settings-tab')">
-            <span class="material-symbols-outlined">settings</span> Настройки
-        </button>
-    </div>
+    <header class="nav-header">
+        <div class="nav-logo">
+            <span class="material-symbols-outlined">hub</span>
+            <span>Штаб ЛМСХ</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html"><span class="material-symbols-outlined">home</span>Главная</a>
+            <a href="oracle.html"><span class="material-symbols-outlined">psychology</span>Оракул</a>
+            <a href="about.html" class="active"><span class="material-symbols-outlined">info</span>О сайте</a>
+        </nav>
+    </header>
 
-    <div id="about-tab" class="tab-content active">
-        <div class="card">
-            <h3>Штабная Информационная Нода</h3>
-            <p style="margin-top: 8px; font-size: 15px; line-height: 1.5;">
-                Добро пожаловать в центральный узел управления интерфейсами ЛМСХ. Данный модуль обеспечивает 
-                управление конфигурациями, запуск кастомных паков Kosmo Level и координацию вычислительных 
-                мощностей Оракула. Разработано в соответствии с гайдлайнами чистой архитектуры.
-            </p>
+    <main class="main-container">
+
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('about-tab')">
+                <span class="material-symbols-outlined">info</span>О проекте
+            </button>
+            <button class="tab-btn" onclick="switchTab('settings-tab')">
+                <span class="material-symbols-outlined">settings</span>Конфигурация
+            </button>
         </div>
 
-        <h2><span class="material-symbols-outlined">groups</span> Команда Штаба</h2>
-        <div class="team-grid">
-            <div class="member-card">
-                <span class="member-icon">🛠️</span>
-                <strong>Ламирк</strong>
-                <div class="member-role">Главный Инженер<br>(Мужской пол)</div>
-            </div>
-            <div class="member-card">
-                <span class="member-icon">🐾</span>
-                <strong>Мурзик</strong>
-                <div class="member-role">Верная Помощница<br>(Женский пол)</div>
-            </div>
-            <div class="member-card">
-                <span class="member-icon">❄️</span>
-                <strong>Снежинка</strong>
-                <div class="member-role">Женский вокал<br>(Женский пол)</div>
-            </div>
-            <div class="member-card">
-                <span class="member-icon">🎤</span>
-                <strong>Хахми</strong>
-                <div class="member-role">Мужской вокал<br>(Мужской пол)</div>
-            </div>
-        </div>
-
-        <h2><span class="material-symbols-outlined">layers</span> Наши Проекты</h2>
-        <div class="card">
-            <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px;">
-                Разработки Штаба, доступные для развертывания:
-            </p>
-            <a href="#" class="project-link">
-                <span>🛸 <strong>Kosmo Level Packs Installer</strong> (Основной Хаб)</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
-            <a href="#" class="project-link">
-                <span>💻 <strong>Developer Kosmo Level</strong> (Доступ к Ремиксам)</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
-            <a href="#" class="project-link">
-                <span>✨ <strong>LMSH 2.0</strong> (Глобальная Экосистема — Июнь 2026)</span>
-                <span class="material-symbols-outlined">schedule</span>
-            </a>
-        </div>
-        
-        <p style="text-align: center; font-size: 12px; color: var(--md-sys-color-outline); margin-top: 24px;">
-            © Powered by ЛМСХ | Сборка Core Node v2.3 (Май 2026)
-        </p>
-    </div>
-
-    <div id="settings-tab" class="tab-content">
-        <h2><span class="material-symbols-outlined">palette</span> Кастомизация интерфейса</h2>
-        <div class="card">
-            <div class="setting-item">
-                <div class="setting-info">
-                    <h4>Режим отображения</h4>
-                    <p>Переключение между темной и светлой темами</p>
+        <div id="about-tab" class="tab-content active">
+            <div class="card">
+                <h2><span class="material-symbols-outlined">groups</span>Штаб Управления ЛМСХ</h2>
+                <p>Добро пожаловать в центральный информационный узел Штаба. Здесь координируются все технические, музыкальные и творческие системы экосистемы.</p>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="icon">🛠️</div>
+                        <div class="name">Ламирк</div>
+                        <div class="role">Главный Инженер</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="icon">🐾</div>
+                        <div class="name">Мурзик</div>
+                        <div class="role">Верная Помощница</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="icon">❄️</div>
+                        <div class="name">Снежинка</div>
+                        <div class="role">Женский вокал</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="icon">🎤</div>
+                        <div class="name">Хахми</div>
+                        <div class="role">Мужской вокал</div>
+                    </div>
                 </div>
-                <select id="setting-theme" onchange="updateSetting('theme', this.value)">
-                    <option value="dark">Тёмная</option>
-                    <option value="light">Светлая</option>
-                </select>
             </div>
 
-            <div class="setting-item">
-                <div class="setting-info">
-                    <h4>Цветовая палитра</h4>
-                    <p>Основной тон Material You элементов</p>
+            <div class="card">
+                <h2><span class="material-symbols-outlined">folder_open</span>Наши Проекты</h2>
+                <div class="project-list">
+                    <a href="#" class="project-item">
+                        <div class="project-meta">
+                            <span class="material-symbols-outlined">deployed_code</span>
+                            <div>
+                                <strong>Kosmo Level Packs Installer</strong>
+                                <div style="font-size: 13px; opacity: 0.7;">Главный портал установки паков уровней</div>
+                            </div>
+                        </div>
+                        <span class="project-status">v3.3 Stable</span>
+                    </a>
+                    <a href="#" class="project-item">
+                        <div class="project-meta">
+                            <span class="material-symbols-outlined">terminal</span>
+                            <div>
+                                <strong>Developer Kosmo Level</strong>
+                                <div style="font-size: 13px; opacity: 0.7;">Режим ремиксов и исходного кода для авторов</div>
+                            </div>
+                        </div>
+                        <span class="project-status">Доступно</span>
+                    </a>
+                    <a href="#" class="project-item">
+                        <div class="project-meta">
+                            <span class="material-symbols-outlined">rocket_launch</span>
+                            <div>
+                                <strong>LMSH Ecosystem 2.0</strong>
+                                <div style="font-size: 13px; opacity: 0.7;">Глобальное обновление инфраструктуры Штаба</div>
+                            </div>
+                        </div>
+                        <span class="project-status" style="background-color: #e49424; color: #fff;">Июнь 2026</span>
+                    </a>
                 </div>
-                <select id="setting-accent" onchange="updateSetting('accent', this.value)">
-                    <option value="default">Стандартный фиолетовый</option>
-                    <option value="lumi">Фиолетовый Люми (Cats Are Liquid)</option>
-                    <option value="murzik">Изумрудный Мурзик 🐾</option>
-                    <option value="hq">Синий Штаб 🛠️</option>
-                </select>
             </div>
         </div>
 
-        <h2><span class="material-symbols-outlined">person</span> Персонализация</h2>
-        <div class="card">
-            <div class="setting-item">
-                <div class="setting-info">
-                    <h4>Идентификатор Инженера</h4>
-                    <p>Имя для обращения в терминалах сайта</p>
+        <div id="settings-tab" class="tab-content">
+            <div class="card">
+                <h2><span class="material-symbols-outlined">palette</span>Интерфейс & Оформление</h2>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">Режим отображения</div>
+                        <div class="setting-desc">Переключение между темным и светлым интерфейсом.</div>
+                    </div>
+                    <select id="theme-select" onchange="updateTheme()">
+                        <option value="dark">Тёмная тема</option>
+                        <option value="light">Светлая тема</option>
+                    </select>
                 </div>
-                <input type="text" id="setting-username" placeholder="Введи имя..." oninput="updateSetting('username', this.value)">
-            </div>
-        </div>
 
-        <h2><span class="material-symbols-outlined">terminal</span> Инженерная конфигурация</h2>
-        <div class="card">
-            <div class="setting-item">
-                <div class="setting-info">
-                    <h4>Режим Разработчика (Dev Mode)</h4>
-                    <p>Включает отладочные логи и доступ к ремиксам паков</p>
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">Цветовой акцент</div>
+                        <div class="setting-desc">Основной цвет кнопок и элементов (Material You стиль).</div>
+                    </div>
+                    <select id="accent-select" onchange="updateAccent()">
+                        <option value="purple">Фиолетовый Люми</option>
+                        <option value="blue">Синий Штаб</option>
+                        <option value="green">Изумрудный Мурзик</option>
+                    </select>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="setting-devmode" onchange="updateSetting('devmode', this.checked)">
-                    <span class="slider"></span>
-                </label>
+            </div>
+
+            <div class="card">
+                <h2><span class="material-symbols-outlined">engineering</span>Инженерные Настройки (LocalStorage)</h2>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">Позывной пользователя</div>
+                        <div class="setting-desc">Как Оракулу и системе обращаться к тебе на страницах.</div>
+                    </div>
+                    <input type="text" id="username-input" placeholder="Инженер" oninput="updateUsername()">
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">Режим Разработчика</div>
+                        <div class="setting-desc">Включает отображение скрытых логов и доступ к ремиксам.</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="dev-switch" onchange="updateDevMode()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div id="dev-console">
-            [SYS LOG]: LocalStorage применен успешно.<br>
-            [SYS LOG]: Node: oracle-ai-pro/oracle инициализирован без внешних сертификатов.<br>
-            [SYS LOG]: Готовность к развертыванию LMSH 2.0 стабильна.
+        <div class="footer-credits">
+            Core Node v2.3 | Powered by ЛМСХ &copy; 2026
         </div>
-    </div>
-</div>
 
-<script>
-    // Переключение вкладок (Табов)
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
-    }
+    </main>
 
-    // Сохранение настроек в LocalStorage
-    function updateSetting(key, value) {
-        localStorage.setItem('lmsh_' + key, value);
-        applySettings();
-    }
-
-    // Загрузка и применение настроек
-    function applySettings() {
-        // 1. Применяем тему
-        const theme = localStorage.getItem('lmsh_theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-        document.getElementById('setting-theme').value = theme;
-
-        // 2. Применяем цветовой акцент
-        const accent = localStorage.getItem('lmsh_accent') || 'default';
-        document.documentElement.setAttribute('data-accent', accent);
-        document.getElementById('setting-accent').value = accent;
-
-        // 3. Загружаем имя пользователя
-        const username = localStorage.getItem('lmsh_username') || '';
-        document.getElementById('setting-username').value = username;
-
-        // 4. Режим разработчика
-        const devMode = localStorage.getItem('lmsh_devmode') === 'true';
-        document.getElementById('setting-devmode').checked = devMode;
-        if (devMode) {
-            document.body.classList.add('dev-active');
-        } else {
-            document.body.classList.remove('dev-active');
+    <script>
+        // Переключение Табов (Вкладок)
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
-    }
 
-    // Применяем настройки сразу при загрузке документа
-    document.addEventListener('DOMContentLoaded', applySettings);
-</script>
+        // Загрузка настроек при старте
+        document.addEventListener('DOMContentLoaded', () => {
+            // Тема
+            const savedTheme = localStorage.getItem('lmsh_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('theme-select').value = savedTheme;
 
+            // Акцент
+            const savedAccent = localStorage.getItem('lmsh_accent') || 'purple';
+            document.documentElement.setAttribute('data-accent', savedAccent);
+            document.getElementById('accent-select').value = savedAccent;
+
+            // Имя пользователя
+            const savedName = localStorage.getItem('lmsh_username') || 'Инженер';
+            document.getElementById('username-input').value = savedName;
+
+            // Режим Разработчика
+            const savedDev = localStorage.getItem('lmsh_dev_mode') === 'true';
+            document.getElementById('dev-switch').checked = savedDev;
+        });
+
+        // Сохранение изменений в LocalStorage
+        function updateTheme() {
+            const val = document.getElementById('theme-select').value;
+            document.documentElement.setAttribute('data-theme', val);
+            localStorage.setItem('lmsh_theme', val);
+        }
+
+        function updateAccent() {
+            const val = document.getElementById('accent-select').value;
+            document.documentElement.setAttribute('data-accent', val);
+            localStorage.setItem('lmsh_accent', val);
+        }
+
+        function updateUsername() {
+            const val = document.getElementById('username-input').value;
+            localStorage.setItem('lmsh_username', val);
+        }
+
+        function updateDevMode() {
+            const val = document.getElementById('dev-switch').checked;
+            localStorage.setItem('lmsh_dev_mode', val);
+        }
+    </script>
 </body>
 </html>
