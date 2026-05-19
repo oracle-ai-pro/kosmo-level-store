@@ -7,8 +7,7 @@
 const NAV_ITEMS = [
     { url: 'index.html', icon: 'home', title: 'Главная' },
     { url: 'kosmogram.html', icon: 'forum', title: 'Kosmogram' },
-    { url: 'helper.html', icon: 'support_agent', title: 'Helper' },
-    { url: 'oracle.html', icon: 'psychology', title: 'Оракул' },
+    { url: 'helper.html', icon: 'support_agent', title: 'Помощник' },
     { url: 'about.html', icon: 'info', title: 'О сайте' }
 ];
 
