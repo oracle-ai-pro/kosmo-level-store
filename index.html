@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
+    <script>
+        // Немедленное применение тем ДО отрисовки страницы
+        (function() {
+            const theme = localStorage.getItem('lmsh_theme') || 'dark';
+            const accent = localStorage.getItem('lmsh_accent') || 'purple';
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-accent', accent);
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Штаб ЛМСХ | Главная</title>
