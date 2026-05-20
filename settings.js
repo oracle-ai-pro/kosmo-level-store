@@ -1,6 +1,5 @@
 // --- КОНФИГУРАЦИЯ ШТАБА ЛМСХ ---
 
-// 1. Список навигации
 const NAV_ITEMS = [
     { url: 'index.html', icon: 'home', title: 'Главная' },
     { url: 'kosmogram.html', icon: 'forum', title: 'Kosmogram' },
@@ -8,7 +7,6 @@ const NAV_ITEMS = [
     { url: 'about.html', icon: 'info', title: 'О сайте' }
 ];
 
-// 2. База данных паков
 const PACKS_DATA = [
     { id: 'abp_official', category: 'official', title: 'A Better Place', description: 'Скачать или обновить оригинальную игру.', type: 'link' },
     { id: 'bad_guest', category: 'purple', title: 'Не хороший гость', description: 'Пак из серии Purple One Continue. Недоступен.', status: 'locked' },
@@ -21,13 +19,7 @@ const PACKS_DATA = [
 ];
 
 function renderNavigation() {
-    // 1. Безопасная проверка: есть ли body?
-    if (!document.body) {
-        console.warn("Body еще не загружен, ждем...");
-        return;
-    }
-
-    // 2. Если уже есть header — не дублируем
+    // Если header уже есть — не плодим дубли
     if (document.querySelector('.nav-header')) return;
 
     const currentPath = window.location.pathname;
@@ -39,24 +31,23 @@ function renderNavigation() {
                 <span>Штаб ЛМСХ</span>
             </div>
             <nav class="nav-links">
-                ${NAV_ITEMS.map(item => `
-                    <a href="${item.url}" class="${currentPath.endsWith(item.url) ? 'active' : ''}">
-                        <span class="material-symbols-outlined">${item.icon}</span>
-                        ${item.title}
-                    </a>
-                `).join('')}
+                ${NAV_ITEMS.map(item => {
+                    // Условие активности: полное совпадение или корень сайта
+                    const isActive = currentPath.endsWith(item.url) || (currentPath === '/' && item.url === 'index.html');
+                    return `
+                        <a href="${item.url}" class="${isActive ? 'active' : ''}">
+                            <span class="material-symbols-outlined">${item.icon}</span>
+                            ${item.title}
+                        </a>
+                    `;
+                }).join('')}
             </nav>
         </header>
     `;
 
-    // 3. Вставляем только если body существует
+    // Вставляем строго в начало body
     document.body.insertAdjacentHTML('afterbegin', navHTML);
 }
-// Запуск только после полной загрузки DOM
-document.addEventListener('DOMContentLoaded', () => {
-    renderNavigation();
-    applyTheme();
-});
 
 function applyTheme() {
     const theme = localStorage.getItem('lmsh_theme') || 'dark';
@@ -64,3 +55,9 @@ function applyTheme() {
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-accent', accent);
 }
+
+// Запускаем всё ОДИН раз, когда HTML полностью построен
+document.addEventListener('DOMContentLoaded', () => {
+    renderNavigation();
+    applyTheme();
+});
