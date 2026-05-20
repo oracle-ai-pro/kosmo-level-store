@@ -22,9 +22,12 @@ const PACKS_DATA = [
 
 // 3. Функция сборки навигации
 function renderNavigation() {
-    // Проверяем, существует ли уже навигация, чтобы не дублировать
+    // 1. Безопасная проверка: если уже есть header — выходим
     if (document.querySelector('.nav-header')) return;
 
+    // 2. Умное определение текущей страницы
+    const currentPath = window.location.pathname;
+    
     const navHTML = `
         <header class="nav-header">
             <div class="nav-logo">
@@ -32,18 +35,23 @@ function renderNavigation() {
                 <span>Штаб ЛМСХ</span>
             </div>
             <nav class="nav-links">
-                ${NAV_ITEMS.map(item => `
-                    <a href="${item.url}" class="${window.location.pathname.includes(item.url) ? 'active' : ''}">
-                        <span class="material-symbols-outlined">${item.icon}</span>
-                        ${item.title}
-                    </a>
-                `).join('')}
+                ${NAV_ITEMS.map(item => {
+                    // Проверяем: совпадает ли путь или это главная
+                    const isActive = currentPath.endsWith(item.url) || (currentPath === '/' && item.url === 'index.html');
+                    return `
+                        <a href="${item.url}" class="${isActive ? 'active' : ''}">
+                            <span class="material-symbols-outlined">${item.icon}</span>
+                            ${item.title}
+                        </a>
+                    `;
+                }).join('')}
             </nav>
         </header>
     `;
+
+    // 3. Вставляем навигацию в самое начало, но перед основным контентом
     document.body.insertAdjacentHTML('afterbegin', navHTML);
 }
-
 // 4. Мгновенный запуск
 // Запускаем сразу, чтобы меню появилось до отрисовки остального контента
 renderNavigation();
