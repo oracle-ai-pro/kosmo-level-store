@@ -1,5 +1,3 @@
-// --- КОНФИГУРАЦИЯ ШТАБА ЛМСХ ---
-
 const NAV_ITEMS = [
     { url: 'index.html', icon: 'home', title: 'Главная' },
     { url: 'kosmogram.html', icon: 'forum', title: 'Kosmogram' },
@@ -7,57 +5,67 @@ const NAV_ITEMS = [
     { url: 'about.html', icon: 'info', title: 'О сайте' }
 ];
 
-const PACKS_DATA = [
-    { id: 'abp_official', category: 'official', title: 'A Better Place', description: 'Скачать или обновить оригинальную игру.', type: 'link' },
-    { id: 'bad_guest', category: 'purple', title: 'Не хороший гость', description: 'Пак из серии Purple One Continue. Недоступен.', status: 'locked' },
-    { id: 'kl_34', category: 'kosmo', version: '3.4', title: 'Kosmo Level 3.4', type: 'worldpack' },
-    { id: 'kl_33', category: 'kosmo', version: '3.3', title: 'Kosmo Level 3.3', type: 'worldpack' },
-    { id: 'kl_32', category: 'kosmo', version: '3.2', title: 'Kosmo Level 3.2', type: 'worldpack' },
-    { id: 'kl_31', category: 'kosmo', version: '3.1', title: 'Kosmo Level 3.1', type: 'worldpack' },
-    { id: 'kl_30', category: 'kosmo', version: '3.0', title: 'Kosmo Level 3.0', type: 'worldpack' },
-    { id: 'lore_lumi', category: 'lore', title: 'Как Люми попала сюда?' }
-];
+const OracleEngine = {
+    getChats: () => JSON.parse(localStorage.getItem('oracle_chats') || '[]'),
+    
+    init: function() {
+        if (document.getElementById('oracle-trigger')) return;
+        const btn = document.createElement('div');
+        btn.id = 'oracle-trigger';
+        btn.innerHTML = '<span class="material-symbols-outlined">psychology</span> Спроси у ИИ';
+        btn.onclick = () => this.openWindow();
+        document.body.appendChild(btn);
+    },
+
+    openWindow: function() {
+        const modal = document.createElement('div');
+        modal.id = 'oracle-modal';
+        modal.innerHTML = `
+            <div class="oracle-content">
+                <div class="oracle-header">
+                    <h3>Оракул 1.1</h3>
+                    <button onclick="document.getElementById('oracle-modal').remove()">✕</button>
+                </div>
+                <div id="chat-list"></div>
+                <button id="new-chat-btn"><span class="material-symbols-outlined">add</span> Новый чат</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        this.renderList();
+    },
+
+    renderList: function() {
+        const list = document.getElementById('chat-list');
+        const chats = this.getChats();
+        list.innerHTML = chats.map((chat, i) => `
+            <div class="chat-item">
+                <span>${chat.title}</span>
+                <button onclick="OracleEngine.deleteChat(${i})">
+                    <span class="material-symbols-outlined">more_vert</span>
+                </button>
+            </div>
+        `).join('');
+    },
+
+    deleteChat: function(i) {
+        if (confirm("Удалить этот чат из памяти Штаба?")) {
+            let c = this.getChats();
+            c.splice(i, 1);
+            localStorage.setItem('oracle_chats', JSON.stringify(c));
+            this.renderList();
+        }
+    }
+};
 
 function renderNavigation() {
-    // Если header уже есть — не плодим дубли
     if (document.querySelector('.nav-header')) return;
-
-    const currentPath = window.location.pathname;
-    
-    const navHTML = `
-        <header class="nav-header">
-            <div class="nav-logo">
-                <span class="material-symbols-outlined">hub</span>
-                <span>Штаб ЛМСХ</span>
-            </div>
-            <nav class="nav-links">
-                ${NAV_ITEMS.map(item => {
-                    // Условие активности: полное совпадение или корень сайта
-                    const isActive = currentPath.endsWith(item.url) || (currentPath === '/' && item.url === 'index.html');
-                    return `
-                        <a href="${item.url}" class="${isActive ? 'active' : ''}">
-                            <span class="material-symbols-outlined">${item.icon}</span>
-                            ${item.title}
-                        </a>
-                    `;
-                }).join('')}
-            </nav>
-        </header>
-    `;
-
-    // Вставляем строго в начало body
-    document.body.insertAdjacentHTML('afterbegin', navHTML);
+    const nav = document.createElement('header');
+    nav.className = 'nav-header';
+    nav.innerHTML = `<nav class="nav-links">${NAV_ITEMS.map(i => `<a href="${i.url}">${i.title}</a>`).join('')}</nav>`;
+    document.body.prepend(nav);
 }
 
-function applyTheme() {
-    const theme = localStorage.getItem('lmsh_theme') || 'dark';
-    const accent = localStorage.getItem('lmsh_accent') || 'purple';
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-accent', accent);
-}
-
-// Запускаем всё ОДИН раз, когда HTML полностью построен
 document.addEventListener('DOMContentLoaded', () => {
     renderNavigation();
-    applyTheme();
+    OracleEngine.init();
 });
