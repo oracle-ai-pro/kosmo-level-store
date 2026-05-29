@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <title>Штаб ЛМСХ</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap" />
     <style>
-        /* СТИЛИ ПАКОВ (твои старые стили карточек) */
+        /* Базовые стили */
         :root { --bg: #0f0f1a; --card-bg: #1a1a2e; --accent: #8a2be2; --text: #fff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
+        
+        /* Сетка паков */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
         .card { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        /* Стили навигации и Оракула добавлены динамически через JS */
+        
+        /* Стили Oracle (оставляем здесь для скорости) */
+        .oracle-win { position: fixed; top: 100px; left: 100px; width: 350px; background: #1a1a2e; border: 1px solid var(--accent); border-radius: 15px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .oracle-header { padding: 15px; background: #0f0f1a; cursor: move; display: flex; justify-content: space-between; }
+        #oracle-trigger { position: fixed; bottom: 20px; right: 20px; background: #000; color: #fff; padding: 12px 24px; border: 2px solid var(--accent); border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 9999; }
     </style>
     <script src="settings.js" defer></script>
 </head>
