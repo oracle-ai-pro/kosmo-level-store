@@ -2,21 +2,18 @@
 <html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Штаб ЛМСХ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap" />
     <style>
-        /* Сюда вставь свой CSS (переменные :root, .nav-header и т.д.) */
-        :root { --bg: #0f0f1a; --accent: #8a2be2; --text: #fff; --card-bg: #1a1a2e; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
-        
-        /* Стили для Oracle 1.1 */
-        #oracle-trigger { position: fixed; bottom: 20px; right: 20px; background: #000; color: #fff; padding: 12px 24px; border: 2px solid var(--accent); border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 9999; }
-        #oracle-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .oracle-content { background: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 20px; border: 1px solid var(--accent); }
+        /* СТИЛИ ПАКОВ (твои старые стили карточек) */
+        :root { --bg: #0f0f1a; --card-bg: #1a1a2e; --accent: #8a2be2; --text: #fff; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+        .card { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        /* Стили навигации и Оракула добавлены динамически через JS */
     </style>
     <script src="settings.js" defer></script>
 </head>
 <body>
-    <main id="content-area"></main>
+    <main id="packs-grid" class="grid"></main>
 </body>
 </html>
