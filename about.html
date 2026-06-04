@@ -8,73 +8,7 @@
     
     <script src="theme.js"></script>
     <script src="nav.js" defer></script>
-    
-    <style>
-        /* Стили только для контента страницы */
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--md-sys-color-background, #141218);
-            color: var(--md-sys-color-on-background, #e6e1e5);
-            transition: background-color 0.3s, color 0.3s;
-            padding-bottom: 80px;
-        }
-
-        .main-container {
-            max-width: 900px;
-            margin: 32px auto;
-            padding: 0 16px;
-        }
-
-        .tabs-container {
-            display: flex;
-            border-bottom: 1px solid var(--md-sys-color-outline, #938f99);
-            margin-bottom: 24px;
-        }
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 16px;
-            color: var(--md-sys-color-on-surface-variant, #cac4d0);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            transition: 0.2s;
-        }
-        .tab-btn.active { color: var(--md-sys-color-primary, #d0bcff); }
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 25%;
-            width: 50%;
-            height: 3px;
-            background-color: var(--md-sys-color-primary, #d0bcff);
-            border-radius: 3px 3px 0 0;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        .card {
-            background-color: var(--md-sys-color-surface, #211f26);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        h2 { margin-top: 0; color: var(--md-sys-color-primary, #d0bcff); display: flex; align-items: center; gap: 10px; }
-
-        .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        select { background-color: var(--md-sys-color-surface-variant, #49454f); color: var(--md-sys-color-on-background); padding: 8px; border-radius: 8px; border: 1px solid var(--md-sys-color-outline); }
-        
-        .footer-credits { text-align: center; font-size: 13px; color: var(--md-sys-color-on-surface-variant); margin-top: 32px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
