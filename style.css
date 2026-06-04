@@ -1,0 +1,30 @@
+/* style.css — Единый каркас Штаба */
+:root {
+    --bg: #141218;
+    --surface: #211f26;
+    --text: #e6e1e5;
+    --primary: #d0bcff;
+}
+
+body {
+    background-color: var(--md-sys-color-background, var(--bg));
+    color: var(--md-sys-color-on-background, var(--text));
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s;
+}
+
+.main-container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+
+.card {
+    background-color: var(--md-sys-color-surface, var(--surface));
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
