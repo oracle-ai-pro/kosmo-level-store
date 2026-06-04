@@ -5,25 +5,7 @@
     <title>Штаб ЛМСХ — Паки</title>
     <script src="theme.js"></script>
     <script src="nav.js" defer></script>
-    <style>
-        /* Оглавление (Категории) */
-        .filter-nav {
-            display: flex; gap: 10px; padding: 20px;
-            overflow-x: auto; /* Чтобы не ломалось на мобилках */
-            background: var(--md-sys-color-surface);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .chip {
-            padding: 8px 16px; border-radius: 20px; cursor: pointer;
-            background: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface-variant);
-            transition: 0.2s; white-space: nowrap;
-        }
-        .chip.active { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: var(--md-sys-color-surface); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
