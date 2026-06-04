@@ -2,20 +2,47 @@
 <html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Оракул | Штаб ЛМСХ</title>
+    <title>Оракул — Штаб ЛМСХ</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-    <script src="nav.js" defer></script> <style>
-        /* Стили индикаторов */
+    <script src="theme.js"></script>
+    <script src="nav.js" defer></script>
+    <style>
+        /* Сброс и растяжка на весь экран */
+        body { margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .chat-container { 
+            flex-grow: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+        }
+        
+        .chat-box { 
+            width: 100%;
+            max-width: 800px;
+            height: 80vh;
+            background: var(--md-sys-color-surface); 
+            border-radius: 24px; 
+            padding: 30px; 
+            border: 1px solid var(--md-sys-color-outline);
+            display: flex;
+            flex-direction: column;
+        }
+
         .status-indicator { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; background: #333; transition: 0.3s; }
         .dot.idle.active { background: #02b6ed; box-shadow: 0 0 10px #02b6ed; }
         .dot.active.active { background: #ff9f43; box-shadow: 0 0 10px #ff9f43; }
         
-        .chat-container { max-width: 600px; margin: 40px auto; padding: 20px; }
-        .chat-box { background: rgba(26, 26, 46, 0.6); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); }
-        .chat-log { height: 300px; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; }
-        .msg { margin-bottom: 15px; padding: 10px 15px; border-radius: 12px; background: rgba(255,255,255,0.05); }
-        .msg.user { text-align: right; background: var(--accent); color: #000; }
+        .chat-log { flex-grow: 1; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; }
+        .msg { margin-bottom: 15px; padding: 12px 16px; border-radius: 12px; background: var(--md-sys-color-surface-variant); }
+        .msg.user { text-align: right; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+        
+        input { 
+            width: 100%; padding: 15px; border-radius: 12px; border: 1px solid var(--md-sys-color-outline);
+            background: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-background); box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -26,9 +53,9 @@
                 <div id="dot-active" class="dot active"></div>
             </div>
             <div id="chat-log" class="chat-log">
-                <div class="msg">Оракул: Система активна. Задавай вопрос, Инженер.</div>
+                <div class="msg">Оракул: Система развернута на полный экран. Ожидаю команды, Инженер.</div>
             </div>
-            <input type="text" id="user-input" class="oracle-input" placeholder="Введите запрос..." onkeydown="if(event.key === 'Enter') sendMessage()">
+            <input type="text" id="user-input" placeholder="Введите код команды..." onkeydown="if(event.key === 'Enter') sendMessage()">
         </div>
     </div>
 
@@ -37,33 +64,32 @@
         const input = document.getElementById('user-input');
 
         const COMMANDS = {
-            "привет": "Приветствую! Соединение стабильно.",
-            "авп": "A Better Place 1.3.6: Готово к интеграции.",
-            "космограм": "Архивный ролик про Бинго ждет тебя.",
-            "лмш": "Глобальное обновление LMSH 2.0 в Июне 2026.",
-            "вокал": "Снежинка и Хахми на низком старте."
+            "привет": "Приветствую, Инженер. Соединение с ядром стабильно.",
+            "авп": "A Better Place 1.3.6: Все пакеты верифицированы.",
+            "космограм": "Доступ к архиву открыт. [Ссылка на Kosmogram]",
+            "лмш": "Июнь 2026: Статус 'Подготовка к релизу 2.0'.",
+            "вокал": "Снежинка и Хахми готовы к записи. Жду сигнала."
         };
 
         function sendMessage() {
             const text = input.value.trim();
             if (!text) return;
             
-            // Добавляем сообщение пользователя
             chatLog.innerHTML += `<div class="msg user">${text}</div>`;
             input.value = "";
+            chatLog.scrollTop = chatLog.scrollHeight;
             
-            // Переключение индикаторов
             document.getElementById('dot-idle').classList.remove('active');
             document.getElementById('dot-active').classList.add('active');
 
             setTimeout(() => {
-                let response = COMMANDS[text.toLowerCase()] || "Команда не распознана. Ядро ожидает корректный код.";
+                let response = COMMANDS[text.toLowerCase()] || "Ошибка 404: Команда не распознана в протоколах Штаба.";
                 chatLog.innerHTML += `<div class="msg">Оракул: ${response}</div>`;
                 chatLog.scrollTop = chatLog.scrollHeight;
                 
                 document.getElementById('dot-idle').classList.add('active');
                 document.getElementById('dot-active').classList.remove('active');
-            }, 1000);
+            }, 800);
         }
     </script>
 </body>
