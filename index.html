@@ -1,26 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Штаб ЛМСХ</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp&display=swap" />
-    <style>
-        /* Базовые стили */
-        :root { --bg: #0f0f1a; --card-bg: #1a1a2e; --accent: #8a2be2; --text: #fff; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
-        
-        /* Сетка паков */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
-        .card { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        
-        /* Стили Oracle (оставляем здесь для скорости) */
-        .oracle-win { position: fixed; top: 100px; left: 100px; width: 350px; background: #1a1a2e; border: 1px solid var(--accent); border-radius: 15px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .oracle-header { padding: 15px; background: #0f0f1a; cursor: move; display: flex; justify-content: space-between; }
-        #oracle-trigger { position: fixed; bottom: 20px; right: 20px; background: #000; color: #fff; padding: 12px 24px; border: 2px solid var(--accent); border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; z-index: 9999; }
-    </style>
+    <title>Штаб ЛМСХ — Паки</title>
+    <script src="theme.js"></script>
     <script src="nav.js" defer></script>
+    <style>
+        /* Оглавление (Категории) */
+        .filter-nav {
+            display: flex; gap: 10px; padding: 20px;
+            overflow-x: auto; /* Чтобы не ломалось на мобилках */
+            background: var(--md-sys-color-surface);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .chip {
+            padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            background: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-on-surface-variant);
+            transition: 0.2s; white-space: nowrap;
+        }
+        .chip.active { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+        .card { background: var(--md-sys-color-surface); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+    </style>
 </head>
 <body>
+
+    <div class="filter-nav" id="category-filter">
+        <div class="chip active" onclick="filterPacks('all')">Все паки</div>
+        <div class="chip" onclick="filterPacks('hard')">Хардкор</div>
+        <div class="chip" onclick="filterPacks('easy')">Легкие</div>
+        <div class="chip" onclick="filterPacks('music')">Музыкальные</div>
+    </div>
+
     <main id="packs-grid" class="grid"></main>
+
+    <script>
+        function filterPacks(category) {
+            // Управление активным чипсом
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Логика фильтрации
+            console.log("Фильтр по категории:", category);
+            // Тут будет код, который скрывает/показывает карточки .card с нужным data-category
+        }
+    </script>
 </body>
 </html>
