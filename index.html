@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Штаб ЛМСХ — Паки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kosmo Level Installer</title>
     <link rel="stylesheet" href="style.css">
-    <script src="theme.js"></script>
-    <script src="nav.js" defer></script>
 </head>
 <body>
 
-    <div class="filter-nav" id="category-filter">
-        <div class="chip active" onclick="filterPacks('all')">Все паки</div>
-        <div class="chip" onclick="filterPacks('hard')">Хардкор</div>
-        <div class="chip" onclick="filterPacks('easy')">Легкие</div>
-        <div class="chip" onclick="filterPacks('music')">Музыкальные</div>
-    </div>
+<header>
+    <h1>Kosmo Level Installer</h1>
+</header>
 
-    <main id="packs-grid" class="grid"></main>
+<nav class="toc">
+    <ul>
+        <li><a href="#events">Ивенты</a></li>
+        <li><a href="#better-place">A Better Place</a></li>
+        <li><a href="#kosmo-level">Kosmo Level</a></li>
+        <li><a href="#planned">Запланированные</a></li>
+        <li><a href="#custom">Кастомные паки</a></li>
+        <li><a href="#stories">Истории</a></li>
+    </ul>
+</nav>
 
-    <script>
-        function filterPacks(category) {
-            // Управление активным чипсом
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Логика фильтрации
-            console.log("Фильтр по категории:", category);
-            // Тут будет код, который скрывает/показывает карточки .card с нужным data-category
-        }
-    </script>
+<section id="events"><h2>Ивенты</h2><p>Контент ивентов...</p></section>
+<section id="better-place"><h2>Скачать / Обновить A Better Place</h2><button class="btn-main">Обновить</button></section>
+<section id="kosmo-level"><h2>Kosmo Level</h2><div id="packs-container"></div></section>
+<section id="planned"><h2>Запланированные паки</h2><p class="empty-msg">Раздел в разработке...</p></section>
+<section id="custom"><h2>Кастомные паки</h2><p>Контент паков...</p></section>
+<section id="stories"><h2>Истории</h2><p>Контент историй...</p></section>
+
+<script src="app.js"></script>
 </body>
 </html>
