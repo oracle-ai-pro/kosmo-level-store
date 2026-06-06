@@ -1,30 +1,18 @@
-/* style.css — Единый каркас Штаба */
 :root {
-    --bg: #141218;
-    --surface: #211f26;
-    --text: #e6e1e5;
-    --primary: #d0bcff;
+    --bg: #0f0a25;
+    --card: #1a1a35;
+    --accent: #6c5ce7;
+    --text: #ffffff;
 }
 
-body {
-    background-color: var(--md-sys-color-background, var(--bg));
-    color: var(--md-sys-color-on-background, var(--text));
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    transition: background 0.3s;
-}
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; line-height: 1.6; }
 
-.main-container {
-    max-width: 900px;
-    margin: 32px auto;
-    padding: 0 16px;
-}
+/* Оглавление */
+.toc ul { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; }
+.toc a { color: var(--accent); border: 1px solid var(--accent); padding: 5px 15px; border-radius: 20px; text-decoration: none; transition: 0.3s; }
+.toc a:hover { background: var(--accent); color: white; }
 
-.card {
-    background-color: var(--md-sys-color-surface, var(--surface));
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
+/* Секции */
+section { background: var(--card); padding: 20px; border-radius: 16px; margin: 20px 0; }
+.empty-msg { opacity: 0.6; font-style: italic; }
+.btn-main { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
