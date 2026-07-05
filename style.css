@@ -1,10 +1,9 @@
-/* Переменные для быстрой смены темы штаба */
+/* Переменные темы штаба ЛМСХ */
 :root {
     --bg-color: #0d0d12;
     --card-bg: rgba(25, 25, 35, 0.7);
-    --accent-blue: #00f2ff; /* Цвет твоего неона */
+    --accent-blue: #00f2ff; /* Цвет твоего неонового кота */
     --text-color: #e6e1e5;
-    --glass: rgba(255, 255, 255, 0.05);
 }
 
 body {
@@ -15,61 +14,102 @@ body {
     padding: 0;
     display: flex;
     justify-content: center;
+    min-height: 100vh;
 }
 
-/* Эффект стекла для карточек */
-.content, .chat-card {
+/* Эффект стекла для главного контейнера */
+.content {
     background: var(--card-bg);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
     padding: 24px;
     width: 90%;
     max-width: 600px;
-    margin-top: 50px;
+    margin: 40px 0 120px 0; /* Отступ снизу, чтобы навигация не перекрывала контент */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    height: fit-content;
 }
 
-/* Плавающая навигация */
-.floating-nav {
-    position: fixed;
-    bottom: 30px;
-    background: rgba(20, 20, 30, 0.85);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--accent-blue);
-    border-radius: 30px;
-    padding: 15px 30px;
+/* Стилизация поиска */
+.search-container {
+    margin: 20px 0;
+}
+#search-wrapper {
     display: flex;
-    gap: 25px;
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+    gap: 10px;
+    align-items: center;
+}
+
+input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 14px 20px;
+    border-radius: 28px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Анимация изменения ширины */
+.normal-input { width: 180px; }
+.ai-input { width: 100%; border-color: var(--accent-blue); box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); }
+
+#mode-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+#mode-toggle:hover { background: var(--accent-blue); color: black; }
+
+/* КРИТИЧЕСКИЙ ФИКС ПЛАВАЮЩЕЙ НАВИГАЦИИ */
+.floating-nav {
+    position: fixed !important;
+    bottom: 25px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    background: rgba(20, 20, 30, 0.9) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--accent-blue) !important;
+    border-radius: 40px !important;
+    padding: 10px 20px !important;
+    gap: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2) !important;
+    width: max-content !important;
 }
 
 .nav-item {
     color: var(--text-color);
     text-decoration: none;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
     transition: 0.3s;
+    cursor: pointer;
 }
-
-.nav-item:hover { color: var(--accent-blue); text-shadow: 0 0 10px var(--accent-blue); }
-
-/* Настройка полей ввода */
-input {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid #444;
-    color: white;
-    padding: 15px;
-    border-radius: 15px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.normal-input { width: 150px; }
-.ai-input { width: 100%; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+.nav-item span { margin-top: 2px; }
+.nav-item:hover { color: var(--accent-blue); text-shadow: 0 0 8px var(--accent-blue); }
 
 /* Лоадер-пасхалка */
 #loader {
-    background: #000;
-    font-family: 'Courier New', monospace;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; color: #fff;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
 }
+#easter-egg { font-family: 'Courier New', monospace; font-size: 1.1rem; letter-spacing: 1px; }
