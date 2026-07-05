@@ -6,8 +6,8 @@
     <title>Kosmo Level Installer - Packs and Historys</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,700,1,0" rel="stylesheet">
-<link rel="icon" type="image/jpeg" href="image_1783243002378.jpeg">
-<link rel="apple-touch-icon" href="image_1783243002378.jpeg">
+    <link rel="icon" type="image/jpeg" href="image_1783243002378.jpeg">
+    <link rel="apple-touch-icon" href="image_1783243002378.jpeg">
 </head>
 <body>
 
@@ -32,36 +32,66 @@
     </main>
 
     <script>
-        // 1. Пасхалка и загрузка данных
+        // 1. Логика загрузки данных и скрытия пасхалки
         window.addEventListener('load', async () => {
             try {
-                // Имитация задержки для отображения пасхалки (можно убрать в финале)
+                // Искусственная задержка 1.5 сек, чтобы рассмотреть пасхалку
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 
                 const response = await fetch('data.json');
+                if (!response.ok) throw new Error('Файл не найден');
                 const data = await response.json();
                 
-                document.getElementById('loader').style.display = 'none';
+                // Плавное скрытие лоадера
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+                
                 console.log("Данные загружены, воздух в штабе в норме.");
+                renderPacks(data.packs);
             } catch (e) {
                 document.getElementById('easter-egg').innerText = "Ошибка загрузки: Окно закрыто, воздух не поступает.";
             }
         });
 
-        // 2. Загрузка навигации
-        fetch('nav.html').then(res => res.text()).then(data => {
-            document.getElementById('nav-placeholder').innerHTML = data;
-        });
+        // 2. Динамическая подгрузка навигации из nav.html
+        fetch('nav.html')
+            .then(res => {
+                if(!res.ok) throw new Error();
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            })
+            .catch(() => console.error("Не удалось загрузить навигационную панель."));
 
-        // 3. Логика переключения поиска
+        // 3. Логика переключения поиска (Обычный / Core Node 2.5)
         const input = document.getElementById('search-input');
         const toggle = document.getElementById('mode-toggle');
 
         toggle.onclick = () => {
             input.classList.toggle('normal-input');
             input.classList.toggle('ai-input');
-            input.placeholder = input.classList.contains('ai-input') ? "Core Node 2.5: Задайте вопрос..." : "Поиск паков...";
+            if (input.classList.contains('ai-input')) {
+                input.placeholder = "Core Node 2.5: Задайте вопрос...";
+            } else {
+                input.placeholder = "Поиск паков...";
+            }
         };
+
+        // Функция рендера паков (простой пример отображения)
+        function renderPacks(packs) {
+            const area = document.getElementById('content-area');
+            if(!packs || packs.length === 0) {
+                area.innerHTML = "<p>Паков пока нет.</p>";
+                return;
+            }
+            area.innerHTML = packs.map(pack => `
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1)">
+                    <h3>${pack.name} (v${pack.version})</h3>
+                </div>
+            `).join('');
+        }
     </script>
 </body>
 </html>
