@@ -15,118 +15,133 @@
 
     <main class="content">
         <h1>Игровые Ивенты</h1>
-        <p style="opacity: 0.6; margin-bottom: 25px;">Следите за расписанием ивентов штаба ЛМСХ</p>
+        
+        <div class="test-notify-container">
+            <button id="btn-test-auth" class="btn-neon">
+                <span class="material-symbols-rounded">security_notification</span>
+                Проверить систему уведомлений
+            </button>
+        </div>
+
+        <p style="opacity: 0.6; margin-bottom: 25px;">Запланированные события штаба ЛМСХ:</p>
         
         <div id="events-area">
-            <p>Загрузка систем мониторинга времени...</p>
-        </div>
+            </div>
     </main>
 
     <script>
-        // 1. Подгрузка общей навигации
-        fetch('nav.html')
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById('nav-placeholder').innerHTML = data;
-                // Запускаем проверку "маячка" после загрузки меню
-                updateNavNotification();
-            });
+        // 1. Подгрузка навигации
+        fetch('nav.html').then(res => res.text()).then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+        });
 
-        // 2. Тестовые данные ивентов (в будущем можно перенести в data.json)
+        // Данные ивентов (Дату ставим в будущем времени)
         const eventsData = [
             {
+                id: "stream-hahmi-2026",
                 name: "Глобальный Стрим Хахми",
-                // Формат даты: ГГГГ-ММ-ДДTHH:ММ:СС (Установи время, когда должен начаться ивент)
                 targetDate: "2026-08-15T18:00:00", 
                 description: "Музыкальный ивент и разбор скрытых комнат пака 3.4 в прямом эфире."
             },
             {
+                id: "audit-lamirk-2026",
                 name: "Технический аудит Ламирка",
                 targetDate: "2026-07-20T12:00:00",
                 description: "Инженерный сброс кэша и обновление Core Node системы."
             }
         ];
 
-        function renderEvents() {
-            const area = document.getElementById('events-area');
-            
-            if (eventsData.length === 0) {
-                area.innerHTML = "<p>Активных ивентов сейчас нет. Наслаждайтесь тишиной в штабе.</p>";
+        // 2. Тестовое уведомление и запрос прав
+        const testBtn = document.getElementById('btn-test-auth');
+        testBtn.onclick = () => {
+            if (!("Notification" in window)) {
+                alert("Этот браузер не поддерживает уведомления.");
                 return;
             }
 
-            area.innerHTML = eventsData.map((event, index) => `
-                <div class="event-card">
-                    <div class="event-header">
-                        <h3>${event.name}</h3>
-                        <span class="status-badge" id="status-${index}">Ожидание</span>
-                    </div>
-                    <p class="event-desc">${event.description}</p>
-                    <div class="countdown-container">
-                        <div class="time-block"><span id="days-${index}">00</span><label>дн</label></div>
-                        <div class="time-block"><span id="hours-${index}">00</span><label>ч</label></div>
-                        <div class="time-block"><span id="mins-${index}">00</span><label>мин</label></div>
-                        <div class="time-block"><span id="secs-${index}">00</span><label>сек</label></div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Запуск таймеров
-            eventsData.forEach((event, index) => {
-                startCountdown(event.targetDate, index);
-            });
-        }
-
-        function startCountdown(dateString, index) {
-            const targetTime = new Date(dateString).getTime();
-
-            const timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const difference = targetTime - now;
-
-                if (difference <= 0) {
-                    clearInterval(timerInterval);
-                    document.getElementById(`status-${index}`).innerText = "ИВЕНТ НАЧАЛСЯ!";
-                    document.getElementById(`status-${index}`).classList.add('active-now');
-                    return;
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification("Штаб ЛМСХ", {
+                        body: "Система уведомлений успешно активирована! Воздух в норме.",
+                        icon: "image_1783243002378.jpeg"
+                    });
+                } else {
+                    alert("Доступ к уведомлениям заблокирован. Проверь настройки приложения или MIUI.");
                 }
+            });
+        };
 
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById(`days-${index}`).innerText = String(days).padStart(2, '0');
-                document.getElementById(`hours-${index}`).innerText = String(hours).padStart(2, '0');
-                document.getElementById(`minutes-${index}`).innerText = String(minutes).padStart(2, '0'); // Фикс ID для минут (в шаблоне mins)
-                // Исправим сразу обращение к элементам:
-                const dEl = document.getElementById(`days-${index}`);
-                const hEl = document.getElementById(`hours-${index}`);
-                const mEl = document.getElementById(`mins-${index}`);
-                const sEl = document.getElementById(`secs-${index}`);
-
-                if(dEl) dEl.innerText = String(days).padStart(2, '0');
-                if(hEl) hEl.innerText = String(hours).padStart(2, '0');
-                if(mEl) mEl.innerText = String(minutes).padStart(2, '0');
-                if(sEl) sEl.innerText = String(seconds).padStart(2, '0');
-
-            }, 1000);
+        // 3. Рендер ивентов
+        function renderEvents() {
+            const area = document.getElementById('events-area');
+            area.innerHTML = eventsData.map((event, index) => {
+                // Проверяем, подписан ли уже пользователь (сохраняем в localStorage)
+                const isSubscribed = localStorage.getItem(`notify_${event.id}`) === 'true';
+                
+                return `
+                    <div class="event-card">
+                        <div class="event-header">
+                            <h3>${event.name}</h3>
+                        </div>
+                        <p class="event-desc">${event.description}</p>
+                        <button class="btn-action ${isSubscribed ? 'subscribed' : ''}" onclick="toggleSubscription('${event.id}', this)">
+                            <span class="material-symbols-rounded">${isSubscribed ? 'notifications_active' : 'notifications'}</span>
+                            <label>${isSubscribed ? 'Вы подписаны' : 'Получить уведомление'}</label>
+                        </button>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // Подсветка колокольчика в меню
-        function updateNavNotification() {
-            // Ищем вторую ссылку в навигации (Игровые Ивенты)
-            const eventLink = document.querySelectorAll('.nav-item')[1];
-            if (eventLink && eventsData.length > 0) {
-                eventLink.style.position = 'relative';
-                // Добавляем красный светящийся маркер уведомления
-                const dot = document.createElement('div');
-                dot.className = 'nav-badge-dot';
-                eventLink.appendChild(dot);
+        // 4. Логика подписки / отписки
+        window.toggleSubscription = (eventId, button) => {
+            if (Notification.permission !== "granted") {
+                alert("Сначала нажми кнопку проверки вверху экрана и разреши уведомления!");
+                return;
             }
+
+            const isSubscribed = localStorage.getItem(`notify_${eventId}`) === 'true';
+            const icon = button.querySelector('.material-symbols-rounded');
+            const label = button.querySelector('label');
+
+            if (isSubscribed) {
+                localStorage.removeItem(`notify_${eventId}`);
+                button.classList.remove('subscribed');
+                icon.innerText = 'notifications';
+                label.innerText = 'Получить уведомление';
+            } else {
+                localStorage.setItem(`notify_${eventId}`, 'true');
+                button.classList.add('subscribed');
+                icon.innerText = 'notifications_active';
+                label.innerText = 'Вы подписаны';
+                
+                // Имитация: Запуск таймера для проверки (сработает, если дата наступила)
+                checkEventTime(eventId);
+            }
+        };
+
+        // Функция симуляции фоновой проверки времени (для теста)
+        function checkEventTime(eventId) {
+            const currentEvent = eventsData.find(e => e.id === eventId);
+            if (!currentEvent) return;
+
+            const checkInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const target = new Date(currentEvent.targetDate).getTime();
+
+                // Если время ивента пришло и подписка активна
+                if (now >= target && localStorage.getItem(`notify_${eventId}`) === 'true') {
+                    new Notification("Ивент начался!", {
+                        body: `Событие "${currentEvent.name}" запущено! Заходи на сайт.`,
+                        icon: "image_1783243002378.jpeg"
+                    });
+                    localStorage.removeItem(`notify_${eventId}`); // Сбрасываем подписку
+                    renderEvents(); // Перерисовываем кнопку
+                    clearInterval(checkInterval);
+                }
+            }, 5000); // Проверка каждые 5 сек (пока вкладка открыта)
         }
 
-        // Инициализация при загрузке страницы
         renderEvents();
     </script>
 </body>
