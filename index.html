@@ -3,33 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosmo Level Installer</title>
+    <title>Kosmo Level Installer - Packs and Historys</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,700,1,0" rel="stylesheet">
 </head>
 <body>
 
-<header>
-    <h1>Kosmo Level Installer</h1>
-</header>
+    <div id="loader">
+        <p id="easter-egg">Паков и Историй нету, открой окно, может из-за нехватки воздуха они пропали...</p>
+    </div>
 
-<nav class="toc">
-    <ul>
-        <li><a href="#events">Ивенты</a></li>
-        <li><a href="#better-place">A Better Place</a></li>
-        <li><a href="#kosmo-level">Kosmo Level</a></li>
-        <li><a href="#planned">Запланированные</a></li>
-        <li><a href="#custom">Кастомные паки</a></li>
-        <li><a href="#stories">Истории</a></li>
-    </ul>
-</nav>
+    <div id="nav-placeholder"></div>
 
-<section id="events"><h2>Ивенты</h2><p>Контент ивентов...</p></section>
-<section id="better-place"><h2>Скачать / Обновить A Better Place</h2><button class="btn-main">Обновить</button></section>
-<section id="kosmo-level"><h2>Kosmo Level</h2><div id="packs-container"></div></section>
-<section id="planned"><h2>Запланированные паки</h2><p class="empty-msg">Раздел в разработке...</p></section>
-<section id="custom"><h2>Кастомные паки</h2><p>Контент паков...</p></section>
-<section id="stories"><h2>Истории</h2><p>Контент историй...</p></section>
+    <main class="content">
+        <h1>Паки и Истории</h1>
+        
+        <div class="search-container">
+            <div id="search-wrapper">
+                <input type="text" id="search-input" placeholder="Поиск паков..." class="normal-input">
+                <button id="mode-toggle" class="material-symbols-rounded">swap_horiz</button>
+            </div>
+        </div>
 
-<script src="app.js"></script>
+        <div id="content-area">
+            </div>
+    </main>
+
+    <script>
+        // 1. Пасхалка и загрузка данных
+        window.addEventListener('load', async () => {
+            try {
+                // Имитация задержки для отображения пасхалки (можно убрать в финале)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                document.getElementById('loader').style.display = 'none';
+                console.log("Данные загружены, воздух в штабе в норме.");
+            } catch (e) {
+                document.getElementById('easter-egg').innerText = "Ошибка загрузки: Окно закрыто, воздух не поступает.";
+            }
+        });
+
+        // 2. Загрузка навигации
+        fetch('nav.html').then(res => res.text()).then(data => {
+            document.getElementById('nav-placeholder').innerHTML = data;
+        });
+
+        // 3. Логика переключения поиска
+        const input = document.getElementById('search-input');
+        const toggle = document.getElementById('mode-toggle');
+
+        toggle.onclick = () => {
+            input.classList.toggle('normal-input');
+            input.classList.toggle('ai-input');
+            input.placeholder = input.classList.contains('ai-input') ? "Core Node 2.5: Задайте вопрос..." : "Поиск паков...";
+        };
+    </script>
 </body>
 </html>
