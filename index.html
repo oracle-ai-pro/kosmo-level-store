@@ -65,19 +65,55 @@
             })
             .catch(() => console.error("Не удалось загрузить навигационную панель."));
 
-        // 3. Логика переключения поиска (Обычный / Core Node 2.5)
-        const input = document.getElementById('search-input');
-        const toggle = document.getElementById('mode-toggle');
+        // 3. Логика переключения поиска и перенаправления
+const input = document.getElementById('search-input');
+const toggle = document.getElementById('mode-toggle');
 
-        toggle.onclick = () => {
-            input.classList.toggle('normal-input');
-            input.classList.toggle('ai-input');
-            if (input.classList.contains('ai-input')) {
-                input.placeholder = "Core Node 2.5: Задайте вопрос...";
-            } else {
-                input.placeholder = "Поиск паков...";
-            }
-        };
+// Функция для отправки текста на страницу Помощника
+function redirectToAssistant() {
+    const query = input.value.trim();
+    if (query) {
+        // Сохраняем запрос в локальное хранилище браузера
+        localStorage.setItem('assistant_query', query);
+        // Перенаправляем на страницу помощника
+        window.location.href = 'assistant.html';
+    } else {
+        input.placeholder = "Введите вопрос перед отправкой...";
+    }
+}
+
+toggle.onclick = () => {
+    if (input.classList.contains('ai-input')) {
+        if (input.value.trim() !== '') {
+            redirectToAssistant();
+        } else {
+            // Если пусто — сдуваем поле обратно
+            input.classList.remove('ai-input');
+            input.classList.add('normal-input');
+            input.placeholder = "Поиск паков...";
+            toggle.innerText = "swap_horiz"; // Возвращаем иконку стрелочек
+        }
+    } else {
+        input.classList.remove('normal-input');
+        input.classList.add('ai-input');
+        input.placeholder = "Core Node 2.5: Задайте вопрос...";
+        toggle.innerText = "send";
+    }
+};
+
+
+// Слушаем нажатие Enter в поле ввода
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        if (input.classList.contains('ai-input')) {
+            redirectToAssistant();
+        } else {
+            // Обычный поиск по пакам (можно дописать позже)
+            console.log("Обычный поиск по пакам:", input.value);
+        }
+    }
+});
+
 
         // Функция рендера паков (простой пример отображения)
         function renderPacks(packs) {
