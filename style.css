@@ -1,18 +1,75 @@
+/* Переменные для быстрой смены темы штаба */
 :root {
-    --bg: #0f0a25;
-    --card: #1a1a35;
-    --accent: #6c5ce7;
-    --text: #ffffff;
+    --bg-color: #0d0d12;
+    --card-bg: rgba(25, 25, 35, 0.7);
+    --accent-blue: #00f2ff; /* Цвет твоего неона */
+    --text-color: #e6e1e5;
+    --glass: rgba(255, 255, 255, 0.05);
 }
 
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; line-height: 1.6; }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
 
-/* Оглавление */
-.toc ul { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; }
-.toc a { color: var(--accent); border: 1px solid var(--accent); padding: 5px 15px; border-radius: 20px; text-decoration: none; transition: 0.3s; }
-.toc a:hover { background: var(--accent); color: white; }
+/* Эффект стекла для карточек */
+.content, .chat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 24px;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
 
-/* Секции */
-section { background: var(--card); padding: 20px; border-radius: 16px; margin: 20px 0; }
-.empty-msg { opacity: 0.6; font-style: italic; }
-.btn-main { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+/* Плавающая навигация */
+.floating-nav {
+    position: fixed;
+    bottom: 30px;
+    background: rgba(20, 20, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--accent-blue);
+    border-radius: 30px;
+    padding: 15px 30px;
+    display: flex;
+    gap: 25px;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+}
+
+.nav-item {
+    color: var(--text-color);
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.nav-item:hover { color: var(--accent-blue); text-shadow: 0 0 10px var(--accent-blue); }
+
+/* Настройка полей ввода */
+input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.normal-input { width: 150px; }
+.ai-input { width: 100%; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
+
+/* Лоадер-пасхалка */
+#loader {
+    background: #000;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
